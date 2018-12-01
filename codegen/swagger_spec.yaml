@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Metabase
+servers:
+  - url: http://example.com/api
+paths:
+  /api/database:
+    get:
+      summary: List Databases
+      operationId: listDatabases
+      tags:
+        - database
+      description: Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
+      parameters:
+        - name: include_tables
+          in: query
+          description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+          required: false
+          schema:
+            type: boolean
+        - name: include_cards
+          in: query
+          description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Database'
+components:
+  schemas:
+    DatabaseDetails:
+      type: object
+      properties:
+        host:
+          type: string
+        port:
+          type: integer
+          format: int32
+        dbname:
+          type: string
+        authMech:
+          type: integer
+          format: int32
+        user:
+          type: string
+        password:
+          type: string
+        connProperties:
+          type: string
+        let-user-control-scheduling:
+          type: boolean
+    DatabaseTable:
+      type: object
+      properties:
+        description:
+          type: string
+        entity_type:
+          description: unknown type
+          type: string
+        schema:
+          type: string
+        raw_table_id:
+          description: unknown type
+          type: string
+        show_in_getting_started:
+          type: boolean
+        name:
+          type: string
+        caveats:
+          description: unknown type
+          type: string
+        rows:
+          type: integer
+          format: int64
+        updated_at:
+          type: string
+          format: date-time
+        entity_name:
+          description: unknown type
+          type: string
+        active:
+          type: boolean
+        id:
+          type: integer
+          format: int64
+        db_id:
+          type: integer
+          format: int64
+        visibility_type:
+          description: unknown type
+          type: string
+        display_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        points_of_interest:
+          description: unknown type
+          type: string
+    Database:
+      type: object
+      required:
+        - id  
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        is_full_sync:
+          type: boolean
+        is_sample:
+          type: boolean
+        cache_field_values_schedule:
+          type: string
+          format: cron-schedule
+        metadata_sync_schedule:
+          type: string
+          format: cron-schedule
+        caveats:
+          description: type unknown
+          type: string
+        engine:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        native_permissions:
+          type: string
+        points_of_interest:
+          description: type unknown
+          type: string
+        details:
+          $ref: '#/components/schemas/DatabaseDetails'
+        tables:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseTable'

@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  title: Metabase
+  version: 1.0.0
+servers:
+- url: http://example.com/api
+paths:
+  /api/database:
+    get:
+      description: Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
+      operationId: listDatabases
+      parameters:
+      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+        explode: true
+        in: query
+        name: include_tables
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+        explode: true
+        in: query
+        name: include_cards
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Database'
+                type: array
+          description: successful operation
+      summary: List Databases
+      tags:
+      - databases
+components:
+  schemas:
+    DatabaseDetails:
+      example:
+        connProperties: connProperties
+        let-user-control-scheduling: true
+        password: password
+        dbname: dbname
+        port: 6
+        host: host
+        user: user
+        authMech: 1
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+        dbname:
+          type: string
+        authMech:
+          format: int32
+          type: integer
+        user:
+          type: string
+        password:
+          type: string
+        connProperties:
+          type: string
+        let-user-control-scheduling:
+          type: boolean
+      type: object
+    DatabaseTable:
+      example:
+        schema: schema
+        entity_name: entity_name
+        description: description
+        active: true
+        created_at: 2000-01-23T04:56:07.000+00:00
+        rows: 5
+        display_name: display_name
+        raw_table_id: raw_table_id
+        caveats: caveats
+        entity_type: entity_type
+        show_in_getting_started: true
+        db_id: 2
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        name: name
+        points_of_interest: points_of_interest
+        id: 5
+        visibility_type: visibility_type
+      properties:
+        description:
+          type: string
+        entity_type:
+          description: unknown type
+          type: string
+        schema:
+          type: string
+        raw_table_id:
+          description: unknown type
+          type: string
+        show_in_getting_started:
+          type: boolean
+        name:
+          type: string
+        caveats:
+          description: unknown type
+          type: string
+        rows:
+          format: int64
+          type: integer
+        updated_at:
+          format: date-time
+          type: string
+        entity_name:
+          description: unknown type
+          type: string
+        active:
+          type: boolean
+        id:
+          format: int64
+          type: integer
+        db_id:
+          format: int64
+          type: integer
+        visibility_type:
+          description: unknown type
+          type: string
+        display_name:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        points_of_interest:
+          description: unknown type
+          type: string
+      type: object
+    Database:
+      example:
+        description: description
+        created_at: 2000-01-23T04:56:07.000+00:00
+        caveats: caveats
+        is_sample: true
+        features:
+        - features
+        - features
+        metadata_sync_schedule: metadata_sync_schedule
+        tables:
+        - schema: schema
+          entity_name: entity_name
+          description: description
+          active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          rows: 5
+          display_name: display_name
+          raw_table_id: raw_table_id
+          caveats: caveats
+          entity_type: entity_type
+          show_in_getting_started: true
+          db_id: 2
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          name: name
+          points_of_interest: points_of_interest
+          id: 5
+          visibility_type: visibility_type
+        - schema: schema
+          entity_name: entity_name
+          description: description
+          active: true
+          created_at: 2000-01-23T04:56:07.000+00:00
+          rows: 5
+          display_name: display_name
+          raw_table_id: raw_table_id
+          caveats: caveats
+          entity_type: entity_type
+          show_in_getting_started: true
+          db_id: 2
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          name: name
+          points_of_interest: points_of_interest
+          id: 5
+          visibility_type: visibility_type
+        is_full_sync: true
+        native_permissions: native_permissions
+        updated_at: 2000-01-23T04:56:07.000+00:00
+        engine: engine
+        name: name
+        points_of_interest: points_of_interest
+        details:
+          connProperties: connProperties
+          let-user-control-scheduling: true
+          password: password
+          dbname: dbname
+          port: 6
+          host: host
+          user: user
+          authMech: 1
+        id: 0
+        cache_field_values_schedule: cache_field_values_schedule
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        features:
+          items:
+            type: string
+          type: array
+        is_full_sync:
+          type: boolean
+        is_sample:
+          type: boolean
+        cache_field_values_schedule:
+          format: cron-schedule
+          type: string
+        metadata_sync_schedule:
+          format: cron-schedule
+          type: string
+        caveats:
+          description: type unknown
+          type: string
+        engine:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        native_permissions:
+          type: string
+        points_of_interest:
+          description: type unknown
+          type: string
+        details:
+          $ref: '#/components/schemas/DatabaseDetails'
+        tables:
+          items:
+            $ref: '#/components/schemas/DatabaseTable'
+          type: array
+      required:
+      - id
+      type: object
