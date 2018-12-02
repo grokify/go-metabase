@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/grokify/gotilla/config"
@@ -21,8 +22,12 @@ func main() {
 
 	serverURL := os.Getenv("METABASE_BASE_URL")
 
-	/*
-		httpClient, res, err := mo.NewClientPassword(
+	var httpClient *http.Client
+
+	if len(os.Getenv("METABASE_SESSION_ID")) > 0 {
+		httpClient = mo.NewClientId(os.Getenv("METABASE_SESSION_ID"), true)
+	} else {
+		httpClient2, res, err := mo.NewClientPassword(
 			serverURL,
 			os.Getenv("METABASE_USERNAME"),
 			os.Getenv("METABASE_PASSWORD"),
@@ -31,9 +36,8 @@ func main() {
 			log.Fatal(err)
 		}
 		fmtutil.PrintJSON(res)
-	*/
-	id := "d591c256-c760-45bf-8ebc-77aba9870561"
-	httpClient := mo.NewClientId(id, true)
+		httpClient = httpClient2
+	}
 
 	apiConfig := metabase.NewConfiguration()
 	apiConfig.BasePath = serverURL
