@@ -4,6 +4,7 @@
 [![Go Report Card][goreport-svg]][goreport-link]
 [![Docs][docs-godoc-svg]][docs-godoc-link]
 [![License][license-svg]][license-link]
+[![Join the chat at https://gitter.im/metabase/metabase](https://badges.gitter.im/metabase/metabase.svg)](https://gitter.im/metabase/metabase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
  [build-status-svg]: https://api.travis-ci.org/grokify/go-metabase.svg?branch=master
  [build-status-link]: https://travis-ci.org/grokify/go-metabase
