@@ -28,3 +28,16 @@ Go SDK built using OpenAPI 3.0 spec and OpenAPI Generator.
   - [ ] POST /api/database/:id/sync
   - [ ] POST /api/database/sample_dataset
   - [ ] PUT /api/database/:id
+
+- [ ] Dataset
+  - [x] POST /api/dataset/
+  - [ ] POST /api/dataset/csv
+  - [ ] POST /api/dataset/duration
+  - [ ] POST /api/dataset/json
+
+References:
+
+* Metabase API Documentation:
+  * https://github.com/metabase/metabase/blob/master/docs/api-documentation.md
+* Metabase OpenAPI 3.0 Spec:
+  * https://github.com/grokify/go-metabase/blob/master/codegen/swagger_spec.yaml

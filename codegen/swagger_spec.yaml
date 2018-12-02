@@ -34,6 +34,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Database'
+  /api/dataset:
+    post:
+      summary: Execute a query
+      operationId: queryDatabase
+      description: Execute a query and retrieve the results in the usual format.
+      tags:
+        - dataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasetQueryJsonQuery'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetQueryResults'
 components:
   schemas:
     DatabaseDetails:
@@ -153,3 +173,213 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseTable'
+    DatasetQueryOpts:
+      type: object
+      properties:
+        description:
+          type: string
+        entity_type:
+          description: unknown type
+    DatasetQueryJsonQuery:
+      type: object
+      properties:
+        database:
+          type: integer
+          format: int32
+        type:
+          type: string
+        query:
+          $ref: '#/components/schemas/DatasetQueryDsl'
+    DatasetQueryDsl:
+      type: object
+      description: Dataset query request and response object
+      properties:
+        source_table:
+          type: integer
+          format: int32
+    DatasetQueryConstraints:
+      type: object
+      properties:
+        'max-results':
+          type: integer
+          format: int64
+        'max-results-bare-rows':
+          type: integer
+          format: int64
+    DatasetQueryResults:
+      type: object
+      properties:
+        started_at:
+          type: string
+          format: date-time
+        json_query:
+          $ref: '#/components/schemas/DatasetQueryJsonQuery'
+        constraints:
+          $ref: '#/components/schemas/DatasetQueryConstraints'
+        average_execution_time:
+          description: type unknown
+          type: string
+        status:
+          type: string
+        context:
+          type: string
+        row_count:
+          type: int
+          format: int64
+        running_time:
+          type: int
+          format: int64
+        data:
+          type: array
+          $ref: '#/components/schemas/DatasetQueryResultsData'
+    DatasetQueryResultsCol:
+      type: object
+      properties:
+        description:
+          type: string
+        table_id:
+          type: integer
+          format: int64
+        schema_name:
+          type: string
+        special_type:
+          type: string
+        name:
+          type: string
+        source:
+          type: string
+        remapped_from:
+          description: unknown type
+          type: string
+        extra_info:
+          description: can be '{"target_table_id":517}'
+          type: object
+        fk_field_id:
+          description: unknown type
+          type: string
+        remapped_to:
+          description: unknown type
+          type: string
+        id:
+          type: integer
+          format: int64
+        visibility_type:
+          type: string
+        target:
+          $ref: 'DatasetQueryResultsColTarget'
+        display_name:
+          type: string
+        fingerprint:
+          $ref: 'DatasetQueryResultsColFingerprint'
+        base_type:
+          type: string
+    DatasetQueryResultsColTarget:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        display_name:
+          type: string
+        table_id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        base_type:
+          type: string
+        special_type:
+          type: string
+        visibility_type:
+          type: string
+    DatasetQueryResultsColFingerprint:
+      type: object
+      properties:
+        global:
+          $ref: 'DatasetQueryResultsColFingerprintGlobal'
+        type:
+          description: map[string]DatasetQueryResultsColFingerprintType results in map[string]interface{}
+          type: object
+          #additionalProperties: true
+          #items:
+          #  $ref: 'DatasetQueryResultsColFingerprintType'
+    DatasetQueryResultsColFingerprintGlobal:
+      type: object
+      properties:
+        distinct-count:
+          type: integer
+          format: int64
+    DatasetQueryResultsColFingerprintType:
+      type: object
+      properties:
+        percent-json:
+          type: number
+          format: double
+        percent-url:
+          type: number
+          format: double
+        percent-email:
+          type: number
+          format: double
+        average-length:
+          type: number
+          format: double
+    DatasetQueryResultsNativeForm:
+      type: object
+      properties:
+        query:
+          type: string
+        params:
+          description: unknown type
+          type: string
+    DatasetQueryResultsData:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+            #$ref: '#/components/schemas/ArrayString'
+        native_form:
+          $ref: '#/components/schemas/DatasetQueryResultsNativeForm'
+        cols:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetQueryResultsCol'
+        results_metadata:
+          $ref: '#/components/schemas/DatasetQueryResultsMetadata'
+        rows_truncated:
+          type: integer
+          format: int64
+    DatasetQueryResultsMetadata:
+      type: object
+      properties:
+        checksum:
+          type: string
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetQueryResultsMetadataColumn'
+    DatasetQueryResultsMetadataColumn:
+      type: object
+      properties:
+        base_type:
+          type: string
+        display_name:
+          type: string
+        name:
+          type: string
+        special_type:
+          type: string
+    ArrayString:
+      type: array
+      items:
+        type: string

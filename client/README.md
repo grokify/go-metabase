@@ -30,14 +30,30 @@ All URIs are relative to *http://example.com/api*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DatabasesApi* | [**ListDatabases**](docs/DatabasesApi.md#listdatabases) | **Get** /api/database | List Databases
+*DatabaseApi* | [**ListDatabases**](docs/DatabaseApi.md#listdatabases) | **Get** /api/database | List Databases
+*DatasetApi* | [**QueryDatabase**](docs/DatasetApi.md#querydatabase) | **Post** /api/dataset | Execute a query
 
 
 ## Documentation For Models
 
+ - [ArrayString](docs/ArrayString.md)
  - [Database](docs/Database.md)
  - [DatabaseDetails](docs/DatabaseDetails.md)
  - [DatabaseTable](docs/DatabaseTable.md)
+ - [DatasetQueryConstraints](docs/DatasetQueryConstraints.md)
+ - [DatasetQueryDsl](docs/DatasetQueryDsl.md)
+ - [DatasetQueryJsonQuery](docs/DatasetQueryJsonQuery.md)
+ - [DatasetQueryOpts](docs/DatasetQueryOpts.md)
+ - [DatasetQueryResults](docs/DatasetQueryResults.md)
+ - [DatasetQueryResultsCol](docs/DatasetQueryResultsCol.md)
+ - [DatasetQueryResultsColFingerprint](docs/DatasetQueryResultsColFingerprint.md)
+ - [DatasetQueryResultsColFingerprintGlobal](docs/DatasetQueryResultsColFingerprintGlobal.md)
+ - [DatasetQueryResultsColFingerprintType](docs/DatasetQueryResultsColFingerprintType.md)
+ - [DatasetQueryResultsColTarget](docs/DatasetQueryResultsColTarget.md)
+ - [DatasetQueryResultsData](docs/DatasetQueryResultsData.md)
+ - [DatasetQueryResultsMetadata](docs/DatasetQueryResultsMetadata.md)
+ - [DatasetQueryResultsMetadataColumn](docs/DatasetQueryResultsMetadataColumn.md)
+ - [DatasetQueryResultsNativeForm](docs/DatasetQueryResultsNativeForm.md)
 
 
 ## Documentation For Authorization

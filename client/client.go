@@ -45,7 +45,9 @@ type APIClient struct {
 
 	// API Services
 
-	DatabasesApi *DatabasesApiService
+	DatabaseApi *DatabaseApiService
+
+	DatasetApi *DatasetApiService
 }
 
 type service struct {
@@ -64,7 +66,8 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.DatabasesApi = (*DatabasesApiService)(&c.common)
+	c.DatabaseApi = (*DatabaseApiService)(&c.common)
+	c.DatasetApi = (*DatasetApiService)(&c.common)
 
 	return c
 }

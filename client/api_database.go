@@ -23,10 +23,10 @@ var (
 	_ context.Context
 )
 
-type DatabasesApiService service
+type DatabaseApiService service
 
 /*
-DatabasesApiService List Databases
+DatabaseApiService List Databases
 Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *ListDatabasesOpts - Optional Parameters:
@@ -40,7 +40,7 @@ type ListDatabasesOpts struct {
 	IncludeCards  optional.Bool
 }
 
-func (a *DatabasesApiService) ListDatabases(ctx context.Context, localVarOptionals *ListDatabasesOpts) ([]Database, *http.Response, error) {
+func (a *DatabaseApiService) ListDatabases(ctx context.Context, localVarOptionals *ListDatabasesOpts) ([]Database, *http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}

@@ -1,10 +1,10 @@
-# \DatabasesApi
+# \DatabaseApi
 
 All URIs are relative to *http://example.com/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ListDatabases**](DatabasesApi.md#ListDatabases) | **Get** /api/database | List Databases
+[**ListDatabases**](DatabaseApi.md#ListDatabases) | **Get** /api/database | List Databases
 
 
 # **ListDatabases**

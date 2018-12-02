@@ -39,7 +39,7 @@ func main() {
 	opts := metabase.ListDatabasesOpts{
 		IncludeTables: optional.NewBool(true)}
 
-	info, resp, err := apiClient.DatabasesApi.ListDatabases(
+	info, resp, err := apiClient.DatabaseApi.ListDatabases(
 		context.Background(), &opts)
 	if err != nil {
 		log.Fatal(err)
