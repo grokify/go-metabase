@@ -30,14 +30,11 @@ type Records struct {
 }
 
 func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJsonQuery) (Records, error) {
-	perPage := MaxPerPage
-	page := metabase.DatasetQueryDslPage{Page: int64(1), Items: perPage}
-
-	opts.Query.Page = page
+	opts.Query.Page = metabase.DatasetQueryDslPage{Page: int64(1), Items: MaxPerPage}
 	records := Records{}
-	pageCount := perPage
+	pageCount := MaxPerPage
 
-	for pageCount >= perPage {
+	for pageCount >= MaxPerPage {
 		info, resp, err := apiClient.DatasetApi.QueryDatabase(
 			context.Background(), opts)
 		if err != nil {
@@ -45,7 +42,9 @@ func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJson
 		} else if resp.StatusCode >= 300 {
 			return records, fmt.Errorf("Metabase API Response Status [%v]", resp.StatusCode)
 		}
-		records.Cols = info.Data.Columns
+		if len(records.Cols) == 0 {
+			records.Cols = info.Data.Columns
+		}
 		records.Rows = append(records.Rows, info.Data.Rows...)
 		opts.Query.Page.Page += int64(1)
 		pageCount = int64(len(info.Data.Rows))
