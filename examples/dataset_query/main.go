@@ -4,45 +4,28 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
-	"os"
 
-	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
 
 	"github.com/grokify/go-metabase/metabase"
+	"github.com/grokify/go-metabase/util"
 	mo "github.com/grokify/oauth2more/metabase"
 )
 
 func main() {
-	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+	cfg := mo.InitConfig{
+		LoadEnv:              true,
+		EnvPath:              "ENV_PATH",
+		EnvMetabaseBaseUrl:   "METABASE_BASE_URL",
+		EnvMetabaseSessionId: "METABASE_SESSION_ID",
+		EnvMetabaseUsername:  "METABASE_USERNAME",
+		EnvMetabasePassword:  "METABASE_PASSWORD",
+		TlsSkipVerify:        true}
+
+	apiClient, _, err := util.NewApiClientEnv(cfg)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-
-	serverURL := os.Getenv("METABASE_BASE_URL")
-
-	var httpClient *http.Client
-
-	if len(os.Getenv("METABASE_SESSION_ID")) > 0 {
-		httpClient = mo.NewClientId(os.Getenv("METABASE_SESSION_ID"), true)
-	} else {
-		httpClient2, res, err := mo.NewClientPassword(
-			serverURL,
-			os.Getenv("METABASE_USERNAME"),
-			os.Getenv("METABASE_PASSWORD"),
-			true)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmtutil.PrintJSON(res)
-		httpClient = httpClient2
-	}
-
-	apiConfig := metabase.NewConfiguration()
-	apiConfig.BasePath = serverURL
-	apiConfig.HTTPClient = httpClient
-	apiClient := metabase.NewAPIClient(apiConfig)
 
 	databaseId := int64(2)
 	sourceTableId := int64(518)
@@ -57,19 +40,28 @@ func main() {
 		Constraints: metabase.DatasetQueryConstraints{MaxResults: 10000},
 	}
 
-	info, resp, err := apiClient.DatasetApi.QueryDatabase(
-		context.Background(), opts)
-	if err != nil {
-		log.Fatal(err)
-	} else if resp.StatusCode >= 300 {
-		log.Fatal(fmt.Sprintf("Status Code [%v]", resp.StatusCode))
+	if 1 == 0 {
+		info, resp, err := apiClient.DatasetApi.QueryDatabase(
+			context.Background(), opts)
+		if err != nil {
+			log.Fatal(err)
+		} else if resp.StatusCode >= 300 {
+			log.Fatal(fmt.Sprintf("Status Code [%v]", resp.StatusCode))
+		}
+
+		fmtutil.PrintJSON(info)
+		fmtutil.PrintJSON(info.JsonQuery)
+		fmt.Printf("ROWS [%v]\n", len(info.Data.Rows))
+		if len(info.Data.Rows) > 0 {
+			fmtutil.PrintJSON(info.Data.Rows[0])
+		}
+	} else {
+		records, err := util.GetAllRecords(apiClient, opts)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("RECORDS [%v]\n", len(records.Rows))
 	}
 
-	fmtutil.PrintJSON(info)
-	fmtutil.PrintJSON(info.JsonQuery)
-	fmt.Printf("ROWS [%v]\n", len(info.Data.Rows))
-	if len(info.Data.Rows) > 0 {
-		fmtutil.PrintJSON(info.Data.Rows[0])
-	}
 	fmt.Println("DONE")
 }
