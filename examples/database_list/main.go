@@ -22,7 +22,7 @@ func main() {
 
 	serverURL := os.Getenv("METABASE_BASE_URL")
 
-	httpClient, err := mo.NewClient(
+	httpClient, _, err := mo.NewClientPassword(
 		serverURL,
 		os.Getenv("METABASE_USERNAME"),
 		os.Getenv("METABASE_PASSWORD"),

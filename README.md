@@ -17,9 +17,25 @@
 
 Go SDK built using OpenAPI 3.0 spec and OpenAPI Generator.
 
-Documentation:
+## Installation
+
+```
+$ go get github.com/grokify/go-metabase/...
+```
+
+## Usage
+
+See the examples in the `examples` folder:
+
+https://github.com/grokify/go-metabase/tree/master/examples
+
+## Documentation
+
+Auto-generated documentation is available here:
 
 * https://github.com/grokify/go-metabase/blob/master/client/README.md
+
+## Coverage
 
 - [ ] Database
   - [ ] DELETE /api/database/:id
@@ -40,7 +56,7 @@ Documentation:
   - [ ] POST /api/dataset/duration
   - [ ] POST /api/dataset/json
 
-References:
+## References
 
 * Query Language '98
   * https://github.com/metabase/metabase/wiki/Query-Language-%2798
@@ -49,7 +65,7 @@ References:
 * Metabase OpenAPI 3.0 Spec:
   * https://github.com/grokify/go-metabase/blob/master/codegen/swagger_spec.yaml
 
-Example Queries:
+### Example Queries
 
 * https://github.com/metabase/metabase/issues/2683
 * https://github.com/metabase/metabase/issues/5635
