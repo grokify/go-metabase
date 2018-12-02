@@ -16,6 +16,10 @@
 
 Go SDK built using OpenAPI 3.0 spec and OpenAPI Generator.
 
+Documentation:
+
+* https://github.com/grokify/go-metabase/blob/master/client/README.md
+
 - [ ] Database
   - [ ] DELETE /api/database/:id
   - [x] GET /api/database/

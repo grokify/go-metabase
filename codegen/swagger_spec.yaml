@@ -379,7 +379,3 @@ components:
           type: string
         special_type:
           type: string
-    ArrayString:
-      type: array
-      items:
-        type: string

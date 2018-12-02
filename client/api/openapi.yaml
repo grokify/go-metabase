@@ -711,7 +711,3 @@ components:
         special_type:
           type: string
       type: object
-    ArrayString:
-      items:
-        type: string
-      type: array

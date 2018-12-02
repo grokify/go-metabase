@@ -36,7 +36,6 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
- - [ArrayString](docs/ArrayString.md)
  - [Database](docs/Database.md)
  - [DatabaseDetails](docs/DatabaseDetails.md)
  - [DatabaseTable](docs/DatabaseTable.md)
