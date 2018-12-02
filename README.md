@@ -1,19 +1,24 @@
 # Metabase Go SDK
 
-[![Build Status][build-status-svg]][build-status-link]
-[![Go Report Card][goreport-svg]][goreport-link]
-[![Docs][docs-godoc-svg]][docs-godoc-link]
-[![License][license-svg]][license-link]
-[![Join the chat at https://gitter.im/metabase/metabase](https://badges.gitter.im/metabase/metabase.svg)](https://gitter.im/metabase/metabase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status][build-status-svg]][build-status-url]
+[![Go Report Card][goreport-svg]][goreport-url]
+[![Docs][docs-godoc-svg]][docs-godoc-url]
+[![License][license-svg]][license-url]
+[![Chat][gitter-svg]][gitter-url]
+[![Discuss][forum-svg]][forum-url]
 
  [build-status-svg]: https://api.travis-ci.org/grokify/go-metabase.svg?branch=master
- [build-status-link]: https://travis-ci.org/grokify/go-metabase
+ [build-status-url]: https://travis-ci.org/grokify/go-metabase
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/go-metabase
- [goreport-link]: https://goreportcard.com/report/github.com/grokify/go-metabase
+ [goreport-url]: https://goreportcard.com/report/github.com/grokify/go-metabase
  [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.svg
- [docs-godoc-link]: https://godoc.org/github.com/grokify/go-metabase
+ [docs-godoc-url]: https://godoc.org/github.com/grokify/go-metabase
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-link]: https://github.com/grokify/go-metabase/blob/master/LICENSE
+ [license-url]: https://github.com/grokify/go-metabase/blob/master/LICENSE
+ [gitter-svg]: https://badges.gitter.im/metabase/metabase.svg
+ [gitter-url]: https://gitter.im/metabase/metabase?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+ [forum-svg]: https://img.shields.io/badge/post-on%20discourse-red.svg
+ [forum-url]: http://discourse.metabase.com/
 
 Go SDK built using OpenAPI 3.0 spec and OpenAPI Generator.
 
