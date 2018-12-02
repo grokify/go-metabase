@@ -41,6 +41,7 @@ Class | Method | HTTP request | Description
  - [DatabaseTable](docs/DatabaseTable.md)
  - [DatasetQueryConstraints](docs/DatasetQueryConstraints.md)
  - [DatasetQueryDsl](docs/DatasetQueryDsl.md)
+ - [DatasetQueryDslPage](docs/DatasetQueryDslPage.md)
  - [DatasetQueryJsonQuery](docs/DatasetQueryJsonQuery.md)
  - [DatasetQueryOpts](docs/DatasetQueryOpts.md)
  - [DatasetQueryResults](docs/DatasetQueryResults.md)

@@ -185,18 +185,34 @@ components:
       properties:
         database:
           type: integer
-          format: int32
+          format: int64
         type:
           type: string
         query:
           $ref: '#/components/schemas/DatasetQueryDsl'
+        constraints:
+          $ref: '#/components/schemas/DatasetQueryConstraints'
     DatasetQueryDsl:
       type: object
       description: Dataset query request and response object
       properties:
         source_table:
           type: integer
-          format: int32
+          format: int64
+        limit:
+          type: integer
+          format: int64
+        page:
+          $ref: '#/components/schemas/DatasetQueryDslPage'
+    DatasetQueryDslPage:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+        items:
+          type: integer
+          format: int64
     DatasetQueryConstraints:
       type: object
       properties:
@@ -214,8 +230,6 @@ components:
           format: date-time
         json_query:
           $ref: '#/components/schemas/DatasetQueryJsonQuery'
-        constraints:
-          $ref: '#/components/schemas/DatasetQueryConstraints'
         average_execution_time:
           description: type unknown
           type: string
@@ -224,10 +238,10 @@ components:
         context:
           type: string
         row_count:
-          type: int
+          type: integer
           format: int64
         running_time:
-          type: int
+          type: integer
           format: int64
         data:
           type: array

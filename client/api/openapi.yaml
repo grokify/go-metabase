@@ -276,30 +276,60 @@ components:
       example:
         database: 0
         query:
+          limit: 1
+          page:
+            page: 5
+            items: 5
           source_table: 6
         type: type
+        constraints:
+          max-results: 2
+          max-results-bare-rows: 7
       properties:
         database:
-          format: int32
+          format: int64
           type: integer
         type:
           type: string
         query:
           $ref: '#/components/schemas/DatasetQueryDsl'
+        constraints:
+          $ref: '#/components/schemas/DatasetQueryConstraints'
       type: object
     DatasetQueryDsl:
       description: Dataset query request and response object
       example:
+        limit: 1
+        page:
+          page: 5
+          items: 5
         source_table: 6
       properties:
         source_table:
-          format: int32
+          format: int64
+          type: integer
+        limit:
+          format: int64
+          type: integer
+        page:
+          $ref: '#/components/schemas/DatasetQueryDslPage'
+      type: object
+    DatasetQueryDslPage:
+      example:
+        page: 5
+        items: 5
+      properties:
+        page:
+          format: int64
+          type: integer
+        items:
+          format: int64
           type: integer
       type: object
     DatasetQueryConstraints:
       example:
-        max-results: 1
-        max-results-bare-rows: 5
+        max-results: 2
+        max-results-bare-rows: 7
       properties:
         max-results:
           format: int64
@@ -313,8 +343,15 @@ components:
         json_query:
           database: 0
           query:
+            limit: 1
+            page:
+              page: 5
+              items: 5
             source_table: 6
           type: type
+          constraints:
+            max-results: 2
+            max-results-bare-rows: 7
         data:
           results_metadata:
             columns:
@@ -327,7 +364,7 @@ components:
               name: name
               display_name: display_name
             checksum: checksum
-          rows_truncated: 2
+          rows_truncated: 1
           native_form:
             query: query
             params: params
@@ -345,7 +382,7 @@ components:
             remapped_to: remapped_to
             schema_name: schema_name
             source: source
-            table_id: 5
+            table_id: 2
             display_name: display_name
             fk_field_id: fk_field_id
             target:
@@ -355,16 +392,16 @@ components:
               description: description
               id: 7
               display_name: display_name
-              table_id: 9
+              table_id: 1
               visibility_type: visibility_type
             extra_info: '{}'
             base_type: base_type
             name: name
             fingerprint:
               global:
-                distinct-count: 3
+                distinct-count: 1
               type: '{}'
-            id: 2
+            id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
           - special_type: special_type
@@ -372,7 +409,7 @@ components:
             remapped_to: remapped_to
             schema_name: schema_name
             source: source
-            table_id: 5
+            table_id: 2
             display_name: display_name
             fk_field_id: fk_field_id
             target:
@@ -382,35 +419,30 @@ components:
               description: description
               id: 7
               display_name: display_name
-              table_id: 9
+              table_id: 1
               visibility_type: visibility_type
             extra_info: '{}'
             base_type: base_type
             name: name
             fingerprint:
               global:
-                distinct-count: 3
+                distinct-count: 1
               type: '{}'
-            id: 2
+            id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
         context: context
         started_at: 2000-01-23T04:56:07.000+00:00
-        running_time: ""
-        constraints:
-          max-results: 1
-          max-results-bare-rows: 5
+        running_time: 3
         average_execution_time: average_execution_time
         status: status
-        row_count: ""
+        row_count: 9
       properties:
         started_at:
           format: date-time
           type: string
         json_query:
           $ref: '#/components/schemas/DatasetQueryJsonQuery'
-        constraints:
-          $ref: '#/components/schemas/DatasetQueryConstraints'
         average_execution_time:
           description: type unknown
           type: string
@@ -420,10 +452,10 @@ components:
           type: string
         row_count:
           format: int64
-          type: int
+          type: integer
         running_time:
           format: int64
-          type: int
+          type: integer
         data:
           $ref: '#/components/schemas/DatasetQueryResultsData'
       type: object
@@ -434,7 +466,7 @@ components:
         remapped_to: remapped_to
         schema_name: schema_name
         source: source
-        table_id: 5
+        table_id: 2
         display_name: display_name
         fk_field_id: fk_field_id
         target:
@@ -444,16 +476,16 @@ components:
           description: description
           id: 7
           display_name: display_name
-          table_id: 9
+          table_id: 1
           visibility_type: visibility_type
         extra_info: '{}'
         base_type: base_type
         name: name
         fingerprint:
           global:
-            distinct-count: 3
+            distinct-count: 1
           type: '{}'
-        id: 2
+        id: 4
         remapped_from: remapped_from
         visibility_type: visibility_type
       properties:
@@ -504,7 +536,7 @@ components:
         description: description
         id: 7
         display_name: display_name
-        table_id: 9
+        table_id: 1
         visibility_type: visibility_type
       properties:
         id:
@@ -529,7 +561,7 @@ components:
     DatasetQueryResultsColFingerprint:
       example:
         global:
-          distinct-count: 3
+          distinct-count: 1
         type: '{}'
       properties:
         global:
@@ -540,7 +572,7 @@ components:
       type: object
     DatasetQueryResultsColFingerprintGlobal:
       example:
-        distinct-count: 3
+        distinct-count: 1
       properties:
         distinct-count:
           format: int64
@@ -585,7 +617,7 @@ components:
             name: name
             display_name: display_name
           checksum: checksum
-        rows_truncated: 2
+        rows_truncated: 1
         native_form:
           query: query
           params: params
@@ -603,7 +635,7 @@ components:
           remapped_to: remapped_to
           schema_name: schema_name
           source: source
-          table_id: 5
+          table_id: 2
           display_name: display_name
           fk_field_id: fk_field_id
           target:
@@ -613,16 +645,16 @@ components:
             description: description
             id: 7
             display_name: display_name
-            table_id: 9
+            table_id: 1
             visibility_type: visibility_type
           extra_info: '{}'
           base_type: base_type
           name: name
           fingerprint:
             global:
-              distinct-count: 3
+              distinct-count: 1
             type: '{}'
-          id: 2
+          id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
         - special_type: special_type
@@ -630,7 +662,7 @@ components:
           remapped_to: remapped_to
           schema_name: schema_name
           source: source
-          table_id: 5
+          table_id: 2
           display_name: display_name
           fk_field_id: fk_field_id
           target:
@@ -640,16 +672,16 @@ components:
             description: description
             id: 7
             display_name: display_name
-            table_id: 9
+            table_id: 1
             visibility_type: visibility_type
           extra_info: '{}'
           base_type: base_type
           name: name
           fingerprint:
             global:
-              distinct-count: 3
+              distinct-count: 1
             type: '{}'
-          id: 2
+          id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
       properties:

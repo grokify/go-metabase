@@ -42,7 +42,13 @@ Documentation:
 
 References:
 
+* Query Language '98
+  * https://github.com/metabase/metabase/wiki/Query-Language-%2798
 * Metabase API Documentation:
   * https://github.com/metabase/metabase/blob/master/docs/api-documentation.md
 * Metabase OpenAPI 3.0 Spec:
   * https://github.com/grokify/go-metabase/blob/master/codegen/swagger_spec.yaml
+
+Example Queries:
+
+* https://github.com/metabase/metabase/issues/2683

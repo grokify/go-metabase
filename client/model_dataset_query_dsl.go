@@ -11,5 +11,7 @@ package metabase
 
 // Dataset query request and response object
 type DatasetQueryDsl struct {
-	SourceTable int32 `json:"source_table,omitempty"`
+	SourceTable int64               `json:"source_table,omitempty"`
+	Limit       int64               `json:"limit,omitempty"`
+	Page        DatasetQueryDslPage `json:"page,omitempty"`
 }

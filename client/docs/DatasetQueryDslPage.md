@@ -1,11 +1,10 @@
-# DatasetQueryDsl
+# DatasetQueryDslPage
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**SourceTable** | **int64** |  | [optional] 
-**Limit** | **int64** |  | [optional] 
-**Page** | [**DatasetQueryDslPage**](DatasetQueryDslPage.md) |  | [optional] 
+**Page** | **int64** |  | [optional] 
+**Items** | **int64** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

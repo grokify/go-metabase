@@ -20,6 +20,7 @@ func main() {
 	}
 
 	serverURL := os.Getenv("METABASE_BASE_URL")
+
 	/*
 		httpClient, res, err := mo.NewClientPassword(
 			serverURL,
@@ -31,7 +32,7 @@ func main() {
 		}
 		fmtutil.PrintJSON(res)
 	*/
-	id := "831ec6b1-4680-4c60-81e8-d1a6b77201b1"
+	id := "d591c256-c760-45bf-8ebc-77aba9870561"
 	httpClient := mo.NewClientId(id, true)
 
 	apiConfig := metabase.NewConfiguration()
@@ -39,14 +40,18 @@ func main() {
 	apiConfig.HTTPClient = httpClient
 	apiClient := metabase.NewAPIClient(apiConfig)
 
-	databaseId := int32(2)
-	sourceTableId := int32(518)
+	databaseId := int64(2)
+	sourceTableId := int64(518)
 
 	opts := metabase.DatasetQueryJsonQuery{
 		Database: databaseId,
 		Type:     "query",
 		Query: metabase.DatasetQueryDsl{
-			SourceTable: sourceTableId}}
+			SourceTable: sourceTableId,
+			Page:        metabase.DatasetQueryDslPage{Page: int64(5), Items: int64(2000)},
+		},
+		Constraints: metabase.DatasetQueryConstraints{MaxResults: 10000},
+	}
 
 	info, resp, err := apiClient.DatasetApi.QueryDatabase(
 		context.Background(), opts)
@@ -56,15 +61,11 @@ func main() {
 		log.Fatal(fmt.Sprintf("Status Code [%v]", resp.StatusCode))
 	}
 
-	info.Constraints.MaxResults = int64(12345)
 	fmtutil.PrintJSON(info)
-
+	fmtutil.PrintJSON(info.JsonQuery)
+	fmt.Printf("ROWS [%v]\n", len(info.Data.Rows))
+	if len(info.Data.Rows) > 0 {
+		fmtutil.PrintJSON(info.Data.Rows[0])
+	}
 	fmt.Println("DONE")
 }
-
-/*
-
-2018/12/01 16:07:19 json: cannot unmarshal array into Go struct field DatasetQueryResultsMetadata.columns of type metabase.DatasetQueryResultsMetadataColumn
-
-
-*/

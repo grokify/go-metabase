@@ -10,7 +10,8 @@
 package metabase
 
 type DatasetQueryJsonQuery struct {
-	Database int32           `json:"database,omitempty"`
-	Type     string          `json:"type,omitempty"`
-	Query    DatasetQueryDsl `json:"query,omitempty"`
+	Database    int64                   `json:"database,omitempty"`
+	Type        string                  `json:"type,omitempty"`
+	Query       DatasetQueryDsl         `json:"query,omitempty"`
+	Constraints DatasetQueryConstraints `json:"constraints,omitempty"`
 }
