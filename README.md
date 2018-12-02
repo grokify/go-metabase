@@ -52,3 +52,4 @@ References:
 Example Queries:
 
 * https://github.com/metabase/metabase/issues/2683
+* https://github.com/metabase/metabase/issues/5635
