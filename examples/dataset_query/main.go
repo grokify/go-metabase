@@ -10,7 +10,7 @@ import (
 	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
 
-	"github.com/grokify/go-metabase/client"
+	"github.com/grokify/go-metabase/metabase"
 	mo "github.com/grokify/oauth2more/metabase"
 )
 
