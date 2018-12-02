@@ -38,7 +38,7 @@ https://github.com/grokify/go-metabase/tree/master/examples
 
 Auto-generated documentation is available here:
 
-* https://github.com/grokify/go-metabase/blob/master/client/README.md
+* https://github.com/grokify/go-metabase/blob/master/metabase/README.md
 
 ## Coverage
 
