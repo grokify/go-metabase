@@ -11,7 +11,7 @@ package metabase
 
 type DatasetQueryResultsData struct {
 	Columns         []string                      `json:"columns,omitempty"`
-	Rows            [][]string                    `json:"rows,omitempty"`
+	Rows            [][]interface{}               `json:"rows,omitempty"`
 	NativeForm      DatasetQueryResultsNativeForm `json:"native_form,omitempty"`
 	Cols            []DatasetQueryResultsCol      `json:"cols,omitempty"`
 	ResultsMetadata DatasetQueryResultsMetadata   `json:"results_metadata,omitempty"`

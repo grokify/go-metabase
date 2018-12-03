@@ -25,8 +25,28 @@ func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, 
 }
 
 type Records struct {
-	Cols []string
-	Rows [][]string
+	Columns []metabase.DatasetQueryResultsMetadataColumn
+	Cols    []string
+	Rows    [][]interface{}
+}
+
+type Record struct {
+	Columns []metabase.DatasetQueryResultsMetadataColumn
+	Cols    []string
+	Row     [][]interface{}
+}
+
+func SimpleQuery(databaseId, tableId int64) metabase.DatasetQueryJsonQuery {
+	return metabase.DatasetQueryJsonQuery{
+		Database: databaseId,
+		Type:     "query",
+		Query: metabase.DatasetQueryDsl{
+			SourceTable: tableId,
+			Page:        metabase.DatasetQueryDslPage{Page: int64(1), Items: MaxPerPage}}}
+}
+
+func GetAllRecordsSimple(apiClient *metabase.APIClient, databaseId, tableId int64) (Records, error) {
+	return GetAllRecords(apiClient, SimpleQuery(databaseId, tableId))
 }
 
 func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJsonQuery) (Records, error) {
@@ -41,6 +61,9 @@ func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJson
 			return records, err
 		} else if resp.StatusCode >= 300 {
 			return records, fmt.Errorf("Metabase API Response Status [%v]", resp.StatusCode)
+		}
+		if len(records.Columns) == 0 {
+			records.Columns = info.Data.ResultsMetadata.Columns
 		}
 		if len(records.Cols) == 0 {
 			records.Cols = info.Data.Columns

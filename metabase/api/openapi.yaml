@@ -372,10 +372,10 @@ components:
           - columns
           - columns
           rows:
-          - - rows
-            - rows
-          - - rows
-            - rows
+          - - '{}'
+            - '{}'
+          - - '{}'
+            - '{}'
           cols:
           - special_type: special_type
             description: description
@@ -625,10 +625,10 @@ components:
         - columns
         - columns
         rows:
-        - - rows
-          - rows
-        - - rows
-          - rows
+        - - '{}'
+          - '{}'
+        - - '{}'
+          - '{}'
         cols:
         - special_type: special_type
           description: description
@@ -692,7 +692,7 @@ components:
         rows:
           items:
             items:
-              type: string
+              type: object
             type: array
           type: array
         native_form:

@@ -35,7 +35,7 @@ func main() {
 		Type:     "query",
 		Query: metabase.DatasetQueryDsl{
 			SourceTable: sourceTableId,
-			Page:        metabase.DatasetQueryDslPage{Page: int64(5), Items: int64(2000)},
+			Page:        metabase.DatasetQueryDslPage{Page: int64(1), Items: int64(2000)},
 		},
 		Constraints: metabase.DatasetQueryConstraints{MaxResults: 10000},
 	}
