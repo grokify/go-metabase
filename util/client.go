@@ -2,8 +2,11 @@ package util
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/grokify/go-metabase/metabase"
 	mo "github.com/grokify/oauth2more/metabase"
@@ -30,10 +33,75 @@ type Records struct {
 	Rows    [][]interface{}
 }
 
+func NewRecordsFromJsonFile(file string) (Records, error) {
+	recs := Records{}
+	bytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		return recs, err
+	}
+	err = json.Unmarshal(bytes, &recs)
+	return recs, err
+}
+
+func (recs *Records) InflateRecord(rec []interface{}) Record {
+	return Record{
+		Columns: recs.Columns,
+		Cols:    recs.Cols,
+		Row:     rec}
+}
+
 type Record struct {
 	Columns []metabase.DatasetQueryResultsMetadataColumn
 	Cols    []string
-	Row     [][]interface{}
+	Row     []interface{}
+}
+
+func (rec *Record) GetStringOrEmpty(key string) string {
+	str, err := rec.GetString(key)
+	if err != nil {
+		return ""
+	}
+	return str
+}
+
+func (rec *Record) GetString(key string) (string, error) {
+	index := -1
+	for i, try := range rec.Cols {
+		if key == try {
+			index = i
+			break
+		}
+	}
+	if index >= 0 && index < len(rec.Row) {
+		rawVal := rec.Row[index]
+		rawStr, ok := rawVal.(string)
+		if !ok {
+			return rawStr, fmt.Errorf("Cannot convert to string [%v]", rawVal)
+		}
+		return rawStr, nil
+	} else {
+		return "", fmt.Errorf("Cannot find column for key [%v]", key)
+	}
+}
+
+func (rec *Record) GetTime(key, format string) (time.Time, error) {
+	index := -1
+	for i, try := range rec.Cols {
+		if key == try {
+			index = i
+			break
+		}
+	}
+	if index >= 0 && index < len(rec.Row) {
+		rawVal := rec.Row[index]
+		rawStr, ok := rawVal.(string)
+		if !ok {
+			return time.Now(), fmt.Errorf("Cannot convert to string [%v]", rawVal)
+		}
+		return time.Parse(format, rawStr)
+	} else {
+		return time.Now(), fmt.Errorf("Cannot find column for key [%v]", key)
+	}
 }
 
 func SimpleQuery(databaseId, tableId int64) metabase.DatasetQueryJsonQuery {
