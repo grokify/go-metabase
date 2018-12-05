@@ -31,6 +31,41 @@ type Records struct {
 	Columns []metabase.DatasetQueryResultsMetadataColumn
 	Cols    []string
 	Rows    [][]interface{}
+	//Records []Record
+}
+
+func (recs *Records) RecordsSet() RecordsSet {
+	rs := RecordsSet{Records: []Record{}}
+	for _, r := range recs.Rows {
+		rs.Records = append(rs.Records, recs.InflateRecord(r))
+	}
+	return rs
+}
+
+func (recs *Records) FilterRecordsString(key, val string) RecordsSet {
+	recs2 := RecordsSet{Records: []Record{}}
+	for _, r := range recs.Rows {
+		r2 := recs.InflateRecord(r)
+		valRec := r2.GetStringOrEmpty(key)
+		if valRec == val {
+			recs2.Records = append(recs2.Records, r2)
+		}
+	}
+	return recs2
+}
+
+func (recs *Records) FilterRecordsStringOr(key string, vals []string) RecordsSet {
+	recs2 := RecordsSet{Records: []Record{}}
+	for _, r := range recs.Rows {
+		r2 := recs.InflateRecord(r)
+		valRec := r2.GetStringOrEmpty(key)
+		for _, val := range vals {
+			if valRec == val {
+				recs2.Records = append(recs2.Records, r2)
+			}
+		}
+	}
+	return recs2
 }
 
 func NewRecordsFromJsonFile(file string) (Records, error) {
@@ -50,10 +85,30 @@ func (recs *Records) InflateRecord(rec []interface{}) Record {
 		Row:     rec}
 }
 
+type RecordsSet struct {
+	Records []Record
+}
+
+func (recs *RecordsSet) FilterRecordsString(key, val string) RecordsSet {
+	recs2 := RecordsSet{Records: []Record{}}
+	for _, rec := range recs.Records {
+		valTry := rec.GetStringOrEmpty(key)
+		if valTry == val {
+			recs2.Records = append(recs2.Records, rec)
+		}
+	}
+	return recs2
+}
+
+func (recs *RecordsSet) TimeSeriesData(key string) {
+
+}
+
 type Record struct {
 	Columns []metabase.DatasetQueryResultsMetadataColumn
 	Cols    []string
 	Row     []interface{}
+	Related []Record
 }
 
 func (rec *Record) GetStringOrEmpty(key string) string {
