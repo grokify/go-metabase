@@ -14,40 +14,67 @@ import (
 	mo "github.com/grokify/oauth2more/metabase"
 )
 
-func main() {
-	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
-	if err != nil {
-		panic(err)
-	}
-
-	serverURL := os.Getenv("METABASE_BASE_URL")
-
-	httpClient, _, err := mo.NewClientPassword(
+func getApiClient(serverURL, username, password, sessionId string) (*metabase.APIClient, *mo.AuthResponse, error) {
+	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
 		serverURL,
-		os.Getenv("METABASE_USERNAME"),
-		os.Getenv("METABASE_PASSWORD"),
+		username,
+		password,
+		sessionId,
 		true)
 	if err != nil {
-		log.Fatal(err)
+		return nil, authResponse, err
 	}
 
 	apiConfig := metabase.NewConfiguration()
 	apiConfig.BasePath = serverURL
 	apiConfig.HTTPClient = httpClient
-	apiClient := metabase.NewAPIClient(apiConfig)
+	return metabase.NewAPIClient(apiConfig), authResponse, nil
+}
 
+func printDatabaseList(apiClient *metabase.APIClient) error {
 	opts := metabase.ListDatabasesOpts{
 		IncludeTables: optional.NewBool(true)}
 
 	info, resp, err := apiClient.DatabaseApi.ListDatabases(
 		context.Background(), &opts)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	} else if resp.StatusCode >= 300 {
-		log.Fatal(fmt.Sprintf("Status Code [%v]", resp.StatusCode))
+		return fmt.Errorf("Status Code [%v]", resp.StatusCode)
 	}
 
-	fmtutil.PrintJSON(info)
+	//fmtutil.PrintJSON(info)
+
+	for _, db := range info {
+		for _, tb := range db.Tables {
+			fmt.Printf("DB_ID [%v] DB_NAME [%v] TB_ID [%v] TB_NAME [%v]\n",
+				db.Id, db.Name, tb.Id, tb.Name)
+		}
+	}
+	return nil
+}
+
+func main() {
+	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+	if err != nil {
+		panic(err)
+	}
+
+	apiClient, authResponse, err := getApiClient(
+		os.Getenv("METABASE_BASE_URL"),
+		os.Getenv("METABASE_USERNAME"),
+		os.Getenv("METABASE_PASSWORD"),
+		os.Getenv("METABASE_SESSION_ID"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmtutil.PrintJSON(authResponse)
+
+	err = printDatabaseList(apiClient)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Println("DONE")
 }
