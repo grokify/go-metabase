@@ -100,8 +100,18 @@ func (recs *RecordsSet) FilterRecordsString(key, val string) RecordsSet {
 	return recs2
 }
 
-func (recs *RecordsSet) TimeSeriesData(key string) {
-
+func (recs *RecordsSet) Distinct(key string) RecordsSet {
+	recs2 := RecordsSet{Records: []Record{}}
+	seen := map[string]int{}
+	for _, rec := range recs.Records {
+		valTry := rec.GetStringOrEmpty(key)
+		if _, ok := seen[valTry]; !ok {
+			recs2.Records = append(recs2.Records, rec)
+			seen[valTry] = 0
+		}
+		seen[valTry] += 1
+	}
+	return recs2
 }
 
 type Record struct {
