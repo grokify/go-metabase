@@ -14,6 +14,23 @@ import (
 
 const MaxPerPage = int64(2000)
 
+func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId string) (*metabase.APIClient, *mo.AuthResponse, error) {
+	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
+		serverURL,
+		username,
+		password,
+		sessionId,
+		true)
+	if err != nil {
+		return nil, authResponse, err
+	}
+
+	apiConfig := metabase.NewConfiguration()
+	apiConfig.BasePath = serverURL
+	apiConfig.HTTPClient = httpClient
+	return metabase.NewAPIClient(apiConfig), authResponse, nil
+}
+
 func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, error) {
 	httpClient, authResponse, err := mo.NewClientEnv(cfg)
 	if err != nil {

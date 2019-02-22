@@ -4,28 +4,31 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
+	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
 
 	"github.com/grokify/go-metabase/metabase"
-	"github.com/grokify/go-metabase/util"
-	mo "github.com/grokify/oauth2more/metabase"
+	mbu "github.com/grokify/go-metabase/util"
 )
 
 func main() {
-	cfg := mo.InitConfig{
-		LoadEnv:              true,
-		EnvPath:              "ENV_PATH",
-		EnvMetabaseBaseUrl:   "METABASE_BASE_URL",
-		EnvMetabaseSessionId: "METABASE_SESSION_ID",
-		EnvMetabaseUsername:  "METABASE_USERNAME",
-		EnvMetabasePassword:  "METABASE_PASSWORD",
-		TlsSkipVerify:        true}
+	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+	if err != nil {
+		panic(err)
+	}
 
-	apiClient, _, err := util.NewApiClientEnv(cfg)
+	apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
+		os.Getenv("METABASE_BASE_URL"),
+		os.Getenv("METABASE_USERNAME"),
+		os.Getenv("METABASE_PASSWORD"),
+		os.Getenv("METABASE_SESSION_ID"))
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmtutil.PrintJSON(authResponse)
 
 	databaseId := int64(2)
 	sourceTableId := int64(518)
@@ -40,7 +43,7 @@ func main() {
 		Constraints: metabase.DatasetQueryConstraints{MaxResults: 10000},
 	}
 
-	if 1 == 0 {
+	if 1 == 1 {
 		info, resp, err := apiClient.DatasetApi.QueryDatabase(
 			context.Background(), opts)
 		if err != nil {
@@ -56,7 +59,7 @@ func main() {
 			fmtutil.PrintJSON(info.Data.Rows[0])
 		}
 	} else {
-		records, err := util.GetAllRecords(apiClient, opts)
+		records, err := mbu.GetAllRecords(apiClient, opts)
 		if err != nil {
 			log.Fatal(err)
 		}

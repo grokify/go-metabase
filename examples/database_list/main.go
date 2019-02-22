@@ -11,25 +11,8 @@ import (
 	"github.com/grokify/gotilla/fmt/fmtutil"
 
 	"github.com/grokify/go-metabase/metabase"
-	mo "github.com/grokify/oauth2more/metabase"
+	mbu "github.com/grokify/go-metabase/util"
 )
-
-func getApiClient(serverURL, username, password, sessionId string) (*metabase.APIClient, *mo.AuthResponse, error) {
-	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
-		serverURL,
-		username,
-		password,
-		sessionId,
-		true)
-	if err != nil {
-		return nil, authResponse, err
-	}
-
-	apiConfig := metabase.NewConfiguration()
-	apiConfig.BasePath = serverURL
-	apiConfig.HTTPClient = httpClient
-	return metabase.NewAPIClient(apiConfig), authResponse, nil
-}
 
 func printDatabaseList(apiClient *metabase.APIClient) error {
 	opts := metabase.ListDatabasesOpts{
@@ -60,7 +43,7 @@ func main() {
 		panic(err)
 	}
 
-	apiClient, authResponse, err := getApiClient(
+	apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
 		os.Getenv("METABASE_BASE_URL"),
 		os.Getenv("METABASE_USERNAME"),
 		os.Getenv("METABASE_PASSWORD"),
