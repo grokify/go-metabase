@@ -43,6 +43,7 @@ Class | Method | HTTP request | Description
  - [DatasetQueryDsl](docs/DatasetQueryDsl.md)
  - [DatasetQueryDslPage](docs/DatasetQueryDslPage.md)
  - [DatasetQueryJsonQuery](docs/DatasetQueryJsonQuery.md)
+ - [DatasetQueryNative](docs/DatasetQueryNative.md)
  - [DatasetQueryOpts](docs/DatasetQueryOpts.md)
  - [DatasetQueryResults](docs/DatasetQueryResults.md)
  - [DatasetQueryResultsCol](docs/DatasetQueryResultsCol.md)

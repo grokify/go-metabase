@@ -25,8 +25,8 @@ Optional parameters are passed through a pointer to a ListDatabasesOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **includeTables** | **optional.Bool**| value may be nil, or if non-nil, value must be a valid boolean string (&#39;true&#39; or &#39;false&#39;). | 
- **includeCards** | **optional.Bool**| value may be nil, or if non-nil, value must be a valid boolean string (&#39;true&#39; or &#39;false&#39;). | 
+ **includeTables** | **optional.Bool**| value may be nil, or if non-nil, value must be a valid boolean string (&#39;true&#39; or &#39;false&#39;). | [default to false]
+ **includeCards** | **optional.Bool**| value may be nil, or if non-nil, value must be a valid boolean string (&#39;true&#39; or &#39;false&#39;). | [default to false]
 
 ### Return type
 

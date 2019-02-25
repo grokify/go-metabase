@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Name** | **string** |  | [optional] 
 **Source** | **string** |  | [optional] 
 **RemappedFrom** | **string** | unknown type | [optional] 
-**ExtraInfo** | [**map[string]interface{}**](map[string]interface{}.md) | can be &#39;{\&quot;target_table_id\&quot;:517}&#39; | [optional] 
+**ExtraInfo** | [**map[string]interface{}**](.md) | can be &#39;{\&quot;target_table_id\&quot;:517}&#39; | [optional] 
 **FkFieldId** | **string** | unknown type | [optional] 
 **RemappedTo** | **string** | unknown type | [optional] 
 **Id** | **int64** |  | [optional] 

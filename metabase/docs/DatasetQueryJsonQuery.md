@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Database** | **int64** |  | [optional] 
 **Type** | **string** |  | [optional] 
+**Native** | [**DatasetQueryNative**](DatasetQueryNative.md) |  | [optional] 
 **Query** | [**DatasetQueryDsl**](DatasetQueryDsl.md) |  | [optional] 
 **Constraints** | [**DatasetQueryConstraints**](DatasetQueryConstraints.md) |  | [optional] 
 

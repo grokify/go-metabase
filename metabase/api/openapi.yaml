@@ -16,6 +16,7 @@ paths:
         name: include_tables
         required: false
         schema:
+          default: false
           type: boolean
         style: form
       - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
@@ -24,6 +25,7 @@ paths:
         name: include_cards
         required: false
         schema:
+          default: false
           type: boolean
         style: form
       responses:
@@ -275,13 +277,15 @@ components:
     DatasetQueryJsonQuery:
       example:
         database: 0
+        native:
+          query: query
         query:
           limit: 1
           page:
             page: 5
             items: 5
           source_table: 6
-        type: type
+        type: native
         constraints:
           max-results: 2
           max-results-bare-rows: 7
@@ -290,11 +294,23 @@ components:
           format: int64
           type: integer
         type:
+          enum:
+          - native
+          - query
           type: string
+        native:
+          $ref: '#/components/schemas/DatasetQueryNative'
         query:
           $ref: '#/components/schemas/DatasetQueryDsl'
         constraints:
           $ref: '#/components/schemas/DatasetQueryConstraints'
+      type: object
+    DatasetQueryNative:
+      example:
+        query: query
+      properties:
+        query:
+          type: string
       type: object
     DatasetQueryDsl:
       description: Dataset query request and response object
@@ -342,13 +358,15 @@ components:
       example:
         json_query:
           database: 0
+          native:
+            query: query
           query:
             limit: 1
             page:
               page: 5
               items: 5
             source_table: 6
-          type: type
+          type: native
           constraints:
             max-results: 2
             max-results-bare-rows: 7

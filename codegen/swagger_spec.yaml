@@ -19,12 +19,14 @@ paths:
           required: false
           schema:
             type: boolean
+            default: false
         - name: include_cards
           in: query
           description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
           required: false
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: successful operation
@@ -188,10 +190,21 @@ components:
           format: int64
         type:
           type: string
+          enum:
+            - native
+            - query
+        native:
+          $ref: '#/components/schemas/DatasetQueryNative'
         query:
           $ref: '#/components/schemas/DatasetQueryDsl'
         constraints:
           $ref: '#/components/schemas/DatasetQueryConstraints'
+    DatasetQueryNative:
+      type: object
+      properties:
+        # Native SQL query.
+        query:
+          type: string
     DatasetQueryDsl:
       type: object
       description: Dataset query request and response object
