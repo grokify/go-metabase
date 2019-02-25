@@ -14,13 +14,13 @@ import (
 
 const MaxPerPage = int64(2000)
 
-func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId string) (*metabase.APIClient, *mo.AuthResponse, error) {
+func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId string, tlsSkipVerify bool) (*metabase.APIClient, *mo.AuthResponse, error) {
 	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
 		serverURL,
 		username,
 		password,
 		sessionId,
-		true)
+		tlsSkipVerify)
 	if err != nil {
 		return nil, authResponse, err
 	}

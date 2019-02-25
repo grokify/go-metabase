@@ -23,7 +23,8 @@ func main() {
 		os.Getenv("METABASE_BASE_URL"),
 		os.Getenv("METABASE_USERNAME"),
 		os.Getenv("METABASE_PASSWORD"),
-		os.Getenv("METABASE_SESSION_ID"))
+		os.Getenv("METABASE_SESSION_ID"),
+		true)
 	if err != nil {
 		log.Fatal(err)
 	}
