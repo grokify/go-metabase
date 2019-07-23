@@ -13,22 +13,6 @@ import (
 )
 
 func main() {
-	/*
-		err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
-		if err != nil {
-			panic(err)
-		}
-
-		apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
-			os.Getenv("METABASE_BASE_URL"),
-			os.Getenv("METABASE_USERNAME"),
-			os.Getenv("METABASE_PASSWORD"),
-			os.Getenv("METABASE_SESSION_ID"),
-			true)
-		if err != nil {
-			log.Fatal(err)
-		}
-	*/
 	appCfg := mbu.AppConfig{}
 	_, err := flags.Parse(&appCfg)
 	if err != nil {
