@@ -4,35 +4,46 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
+	"github.com/jessevdk/go-flags"
 
 	"github.com/grokify/go-metabase/metabase"
 	mbu "github.com/grokify/go-metabase/util"
 )
 
 func main() {
-	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+	/*
+		err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+		if err != nil {
+			panic(err)
+		}
+
+		apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
+			os.Getenv("METABASE_BASE_URL"),
+			os.Getenv("METABASE_USERNAME"),
+			os.Getenv("METABASE_PASSWORD"),
+			os.Getenv("METABASE_SESSION_ID"),
+			true)
+		if err != nil {
+			log.Fatal(err)
+		}
+	*/
+	appCfg := mbu.AppConfig{}
+	_, err := flags.Parse(&appCfg)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
-		os.Getenv("METABASE_BASE_URL"),
-		os.Getenv("METABASE_USERNAME"),
-		os.Getenv("METABASE_PASSWORD"),
-		os.Getenv("METABASE_SESSION_ID"),
-		true)
+	apiClient, authResponse, err := appCfg.GetClient()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmtutil.PrintJSON(authResponse)
 
-	databaseId := int64(2)
-	sourceTableId := int64(518)
+	databaseId := int64(3)
+	sourceTableId := int64(656)
 
 	opts := metabase.DatasetQueryJsonQuery{
 		Database: databaseId,

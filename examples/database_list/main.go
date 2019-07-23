@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/antihax/optional"
-	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
+	"github.com/jessevdk/go-flags"
 
 	"github.com/grokify/go-metabase/metabase"
 	mbu "github.com/grokify/go-metabase/util"
@@ -25,7 +24,6 @@ func printDatabaseList(apiClient *metabase.APIClient) error {
 	} else if resp.StatusCode >= 300 {
 		return fmt.Errorf("Status Code [%v]", resp.StatusCode)
 	}
-
 	//fmtutil.PrintJSON(info)
 
 	for _, db := range info {
@@ -38,17 +36,13 @@ func printDatabaseList(apiClient *metabase.APIClient) error {
 }
 
 func main() {
-	err := config.LoadDotEnvSkipEmpty(os.Getenv("ENV_PATH"), "./.env")
+	opts := mbu.AppConfig{}
+	_, err := flags.Parse(&opts)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	apiClient, authResponse, err := mbu.NewApiClientPasswordWithSessionId(
-		os.Getenv("METABASE_BASE_URL"),
-		os.Getenv("METABASE_USERNAME"),
-		os.Getenv("METABASE_PASSWORD"),
-		os.Getenv("METABASE_SESSION_ID"),
-		true)
+	apiClient, authResponse, err := opts.GetClient()
 	if err != nil {
 		log.Fatal(err)
 	}
