@@ -1,4 +1,4 @@
-package util
+package metabaseutil
 
 import (
 	"context"
@@ -42,6 +42,13 @@ func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, 
 	apiClient := metabase.NewAPIClient(apiConfig)
 
 	return apiClient, authResponse, nil
+}
+
+func NewApiClientSessionId(serverUrl, token string, tlsSkipVerify bool) *metabase.APIClient {
+	return metabase.NewAPIClient(
+		&metabase.Configuration{
+			BasePath:   serverUrl,
+			HTTPClient: mo.NewClientSessionId(token, tlsSkipVerify)})
 }
 
 type Records struct {
