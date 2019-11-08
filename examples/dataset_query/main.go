@@ -9,7 +9,7 @@ import (
 	"github.com/jessevdk/go-flags"
 
 	"github.com/grokify/go-metabase/metabase"
-	mbu "github.com/grokify/go-metabase/util"
+	mbu "github.com/grokify/go-metabase/metabaseutil"
 )
 
 func main() {
