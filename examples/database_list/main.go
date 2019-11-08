@@ -12,7 +12,7 @@ import (
 	"github.com/grokify/go-metabase/metabaseutil"
 )
 
-type Options struct {
+type optionsDbList struct {
 	Site    string `short:"s" long:"site" description:"Your Site" required:"true"`
 	Token   string `short:"t" long:"token" description:"Your Token" required:"true"`
 	Verbose []bool `short:"v" long:"verbose" description:"Verbose - Include Tables" required:"false"`
@@ -44,7 +44,7 @@ func printDatabaseList(apiClient *metabase.APIClient, verbose bool) error {
 }
 
 func main() {
-	opts := Options{}
+	opts := optionsDbList{}
 	_, err := flags.Parse(&opts)
 	if err != nil {
 		log.Fatal(err)

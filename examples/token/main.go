@@ -8,14 +8,14 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
-type Options struct {
+type optionsToken struct {
 	Site     string `short:"s" long:"site" description:"Your Site" required:"true"`
 	Username string `short:"u" long:"username" description:"Your username" required:"true"`
 	Password string `short:"p" long:"password" description:"Your password" required:"true"`
 }
 
 func main() {
-	opts := Options{}
+	opts := optionsToken{}
 	_, err := flags.Parse(&opts)
 	if err != nil {
 		log.Fatal(err)
