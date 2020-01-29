@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"time"
 
@@ -31,17 +32,34 @@ func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId 
 	return metabase.NewAPIClient(apiConfig), authResponse, nil
 }
 
+func NewApiClientConfig(cfg mo.Config) (*metabase.APIClient, *mo.AuthResponse, error) {
+	httpClient, authResponse, err := mo.NewClientConfig(cfg)
+	if err != nil {
+		return nil, authResponse, err
+	}
+	apiClient := NewApiClientHttpClient(cfg.BaseUrl, httpClient)
+	return apiClient, authResponse, nil
+}
+
 func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, error) {
 	httpClient, authResponse, err := mo.NewClientEnv(cfg)
 	if err != nil {
 		return nil, authResponse, err
 	}
-	apiConfig := metabase.NewConfiguration()
+
+	apiClient := NewApiClientHttpClient(os.Getenv(cfg.EnvMetabaseBaseUrl), httpClient)
+	/*apiConfig := metabase.NewConfiguration()
 	apiConfig.BasePath = os.Getenv(cfg.EnvMetabaseBaseUrl)
 	apiConfig.HTTPClient = httpClient
-	apiClient := metabase.NewAPIClient(apiConfig)
-
+	apiClient := metabase.NewAPIClient(apiConfig)*/
 	return apiClient, authResponse, nil
+}
+
+func NewApiClientHttpClient(mbBaseUrl string, httpClient *http.Client) *metabase.APIClient {
+	apiConfig := metabase.NewConfiguration()
+	apiConfig.BasePath = mbBaseUrl
+	apiConfig.HTTPClient = httpClient
+	return metabase.NewAPIClient(apiConfig)
 }
 
 func NewApiClientSessionId(serverUrl, token string, tlsSkipVerify bool) *metabase.APIClient {
