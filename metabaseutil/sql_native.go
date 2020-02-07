@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -56,6 +57,14 @@ func QuerySQLHttp(httpClient *http.Client, baseUrl string, databaseId int64, sql
 
 type SqlResponse struct {
 	Data SqlData `json:"data,omitempty"`
+}
+
+func NewSqlResponseHttp(resp *http.Response) (*SqlResponse, error) {
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return NewSqlResponse(bytes)
 }
 
 func NewSqlResponse(bytes []byte) (*SqlResponse, error) {

@@ -33,7 +33,7 @@ func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId 
 }
 
 func NewApiClientConfig(cfg mo.Config) (*metabase.APIClient, *mo.AuthResponse, error) {
-	httpClient, authResponse, err := mo.NewClientConfig(cfg)
+	httpClient, authResponse, err := mo.NewClient(cfg)
 	if err != nil {
 		return nil, authResponse, err
 	}
@@ -48,10 +48,6 @@ func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, 
 	}
 
 	apiClient := NewApiClientHttpClient(os.Getenv(cfg.EnvMetabaseBaseUrl), httpClient)
-	/*apiConfig := metabase.NewConfiguration()
-	apiConfig.BasePath = os.Getenv(cfg.EnvMetabaseBaseUrl)
-	apiConfig.HTTPClient = httpClient
-	apiClient := metabase.NewAPIClient(apiConfig)*/
 	return apiClient, authResponse, nil
 }
 

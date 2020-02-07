@@ -12,11 +12,12 @@ import (
 )
 
 type AppConfig struct {
-	Config    string `short:"c" long:"config" description:"Config (cli,env)" required:"true"`
-	URL       string `short:"u" long:"url" description:"The base URL" required:"false"`
-	Username  string `short:"n" long:"username" description:"The username" required:"false"`
-	Password  string `short:"p" long:"password" description:"The password" required:"false"`
-	SessionId string `short:"s" long:"sessionid" description:"The sessionId" required:"false"`
+	Config        string `short:"c" long:"config" description:"Config (cli,env)" required:"true"`
+	URL           string `short:"u" long:"url" description:"The base URL" required:"false"`
+	Username      string `short:"n" long:"username" description:"The username" required:"false"`
+	Password      string `short:"p" long:"password" description:"The password" required:"false"`
+	SessionId     string `short:"s" long:"sessionid" description:"The sessionId" required:"false"`
+	TlsSkipVerify bool
 }
 
 func (opts *AppConfig) validate() error {
