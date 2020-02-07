@@ -24,34 +24,39 @@ func QueryMetabaseSTS(cfg Config, dsInfo DatasetInfo) (statictimeseries.DataSeri
 	if err != nil {
 		return sts, err
 	}
-	sts, err = SqlResponseToSTS(dsInfo.KpiName, sqlResp, 0, 1)
+	sts, err = SqlResponseToSTS(dsInfo.KpiName, sqlResp,
+		dsInfo.MetabaseQueryColIdxCount,
+		dsInfo.MetabaseQueryColIdxDate)
 	return sts, err
 }
 
-func UpdateSimpleKpiSTS(cfg Config, dsInfo DatasetInfo) []error {
+func UpdateSimpleKpi(cfg Config, dsInfo DatasetInfo) []error {
 	sts, err := QueryMetabaseSTS(cfg, dsInfo)
 	if err != nil {
 		return []error{err}
 	}
+	return UpdateSimpleKpiSTS(cfg, dsInfo, sts)
+}
+
+func UpdateSimpleKpiSTS(cfg Config, dsInfo DatasetInfo, sts statictimeseries.DataSeries) []error {
 	_, resps, err := simplekpiutil.UpsertKpiEntriesStaticTimeSeries(
 		cfg.SimplekpiApiClient,
 		int64(cfg.SimplekpiUserID),
 		int64(dsInfo.SimplekpiKpiId),
 		sts)
+	if err != nil {
+		return []error{err}
+	}
 	errs := simplekpiutil.KpiEntryResponseErrors(resps)
 	return errs
 }
 
 func UpdateSimpleKpiSqlResponse(cfg Config, dsInfo DatasetInfo, sqlResp *SqlResponse) []error {
-	sts, err := SqlResponseToSTS(dsInfo.KpiName, sqlResp, 0, 1)
+	sts, err := SqlResponseToSTS(dsInfo.KpiName, sqlResp,
+		dsInfo.MetabaseQueryColIdxCount,
+		dsInfo.MetabaseQueryColIdxDate)
 	if err != nil {
 		return []error{err}
 	}
-	_, resps, err := simplekpiutil.UpsertKpiEntriesStaticTimeSeries(
-		cfg.SimplekpiApiClient,
-		int64(cfg.SimplekpiUserID),
-		int64(dsInfo.SimplekpiKpiId),
-		sts)
-	errs := simplekpiutil.KpiEntryResponseErrors(resps)
-	return errs
+	return UpdateSimpleKpiSTS(cfg, dsInfo, sts)
 }

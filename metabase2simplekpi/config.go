@@ -19,10 +19,12 @@ type Config struct {
 }
 
 type DatasetInfo struct {
-	KpiName                 string `json:"kpiName"`
-	MetabaseQueryDatabaseId int    `json:"metabaseQueryDatabaseId"`
-	MetabaseQueryNativeSQL  string `json:"metabaseQuerySQLNative"`
-	SimplekpiKpiId          int    `json:"simplekpiKpiId"`
+	KpiName                  string `json:"kpiName"`
+	MetabaseQueryDatabaseId  int    `json:"metabaseQueryDatabaseId"`
+	MetabaseQueryNativeSQL   string `json:"metabaseQuerySQLNative"`
+	MetabaseQueryColIdxCount int    `json:"metabaseQueryColIdxCount"`
+	MetabaseQueryColIdxDate  int    `json:"metabaseQueryColIdxDate"`
+	SimplekpiKpiId           int    `json:"simplekpiKpiId"`
 }
 
 func (cfg *Config) InitClients() error {
