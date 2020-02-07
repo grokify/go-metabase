@@ -1,7 +1,5 @@
 package metabase2simplekpi
 
-// $ go run sql.go -d 3 -q abc -s 'https://data.corp.ringcentral.com/pla-prod' -t 'ab33281e-d9c1-46e5-8c3b-63ea9e4a77fb'
-
 import (
 	"net/http"
 
@@ -27,7 +25,15 @@ type DatasetInfo struct {
 	SimplekpiKpiId          int    `json:"simplekpiKpiId"`
 }
 
-func (cfg *Config) InitMetabase() error {
+func (cfg *Config) InitClients() error {
+	err := cfg.InitMetabaseClient()
+	if err != nil {
+		return err
+	}
+	return cfg.InitSimplekpiClient()
+}
+
+func (cfg *Config) InitMetabaseClient() error {
 	if cfg.MetabaseHttpClient != nil {
 		return nil
 	}
@@ -39,11 +45,11 @@ func (cfg *Config) InitMetabase() error {
 	return nil
 }
 
-func (cfg *Config) InitSimplekpi() error {
+func (cfg *Config) InitSimplekpiClient() error {
 	if cfg.SimplekpiApiClient != nil {
 		return nil
 	}
-	client, err := simplekpiutil.NewClient(
+	client, err := simplekpiutil.NewApiClient(
 		cfg.SimplekpiConfig.Site,
 		cfg.SimplekpiConfig.Username,
 		cfg.SimplekpiConfig.Token)
