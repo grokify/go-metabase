@@ -63,14 +63,18 @@ Auto-generated documentation is available here:
 
 ## References
 
-* Query Language '98
-  * https://github.com/metabase/metabase/wiki/Query-Language-%2798
+* Using the REST API
+  * https://github.com/metabase/metabase/wiki/Using-the-REST-API
 * Metabase API Documentation:
   * https://github.com/metabase/metabase/blob/master/docs/api-documentation.md
 * Metabase OpenAPI 3.0 Spec:
   * https://github.com/grokify/go-metabase/blob/master/codegen/swagger_spec.yaml
+* Query Language '98
+  * https://github.com/metabase/metabase/wiki/Query-Language-%2798
 
 ### Example Queries
 
 * https://github.com/metabase/metabase/issues/2683
 * https://github.com/metabase/metabase/issues/5635
+
+`curl -XGET 'http://server/api/user/current' -H "X-Metabase-Session: 38f4939c-ad7f-4cbe-ae54-30946daf8593"`
