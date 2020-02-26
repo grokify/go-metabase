@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/grokify/gocharts/data/statictimeseries"
@@ -18,6 +19,11 @@ func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("E_METABASE_API_ERROR STATUS[%v] MSG[%v]",
+			resp.StatusCode, strings.TrimSpace(string(bytes)))
+	}
+	fmt.Println(string(bytes))
 	sr := &SqlResponse{}
 	err = json.Unmarshal(bytes, sr)
 	return sr, err
