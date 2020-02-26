@@ -26,6 +26,9 @@ func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	fmt.Println(string(bytes))
 	sr := &SqlResponse{}
 	err = json.Unmarshal(bytes, sr)
+	if err != nil {
+		err = errors.Wrap(err, "E_METABASE_API_RESPONSE_JSON_DECODE")
+	}
 	return sr, err
 }
 
