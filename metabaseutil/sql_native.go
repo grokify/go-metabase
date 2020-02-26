@@ -32,6 +32,15 @@ func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (meta
 	return info, resp, err
 }
 
+func QuerySQLHttpMore(httpClient *http.Client, baseUrl string, databaseId int64, sql string) (*SqlResponse, *http.Response, error) {
+	resp, err := QuerySQLHttp(httpClient, baseUrl, databaseId, sql)
+	if err != nil {
+		return nil, resp, err
+	}
+	sqlr, err := NewSqlResponseHttp(resp)
+	return sqlr, resp, err
+}
+
 func QuerySQLHttp(httpClient *http.Client, baseUrl string, databaseId int64, sql string) (*http.Response, error) {
 	apiUrl := urlutil.JoinAbsolute(baseUrl, ApiUrlDataset)
 
