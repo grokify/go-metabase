@@ -24,10 +24,9 @@ func QueryMetabaseSTS(cfg Config, dsInfo DatasetInfo) (statictimeseries.DataSeri
 	if err != nil {
 		return sts, err
 	}
-	sts, err = SqlResponseToSTS(dsInfo.KpiName, sqlResp,
+	return SqlResponseToSTS(dsInfo.KpiName, sqlResp,
 		dsInfo.MetabaseQueryColIdxCount,
 		dsInfo.MetabaseQueryColIdxDate)
-	return sts, err
 }
 
 func UpdateSimpleKpi(cfg Config, dsInfo DatasetInfo) []error {
