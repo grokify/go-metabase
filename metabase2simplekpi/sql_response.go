@@ -12,14 +12,14 @@ import (
 	"github.com/grokify/gocharts/data/statictimeseries"
 	"github.com/grokify/gocharts/data/table"
 	"github.com/grokify/gotilla/time/timeutil"
+	"github.com/pkg/errors"
 )
 
 func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode >= 300 {
+		return nil, errors.Wrap(err, "E_METABASE_API_READ_BODY_ERROR")
+	} else if resp.StatusCode >= 300 {
 		return nil, fmt.Errorf("E_METABASE_API_ERROR STATUS[%v] MSG[%v]",
 			resp.StatusCode, strings.TrimSpace(string(bytes)))
 	}
