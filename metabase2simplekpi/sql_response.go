@@ -15,6 +15,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// HTTPResponseToSqlResponse parses a Metabase SQL response.
 func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -23,21 +24,48 @@ func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 		return nil, fmt.Errorf("E_METABASE_API_ERROR STATUS[%v] MSG[%v]",
 			resp.StatusCode, strings.TrimSpace(string(bytes)))
 	}
-	fmt.Println(string(bytes))
+
 	sr := &SqlResponse{}
 	err = json.Unmarshal(bytes, sr)
 	if err != nil {
 		err = errors.Wrap(err, "E_METABASE_API_RESPONSE_JSON_DECODE")
+	} else if len(strings.TrimSpace(sr.Error)) > 0 {
+		sr.Error = strings.TrimSpace(sr.Error)
+		sr.Status = strings.TrimSpace(sr.Status)
+		if len(sr.Status) > 0 {
+			err = fmt.Errorf("E_METABASE_API_STATUS [%v] API_ERROR [%v]", sr.Status, sr.Error)
+		} else {
+			err = fmt.Errorf("E_METABASE_API_ERROR [%v]", sr.Error)
+		}
 	}
 	return sr, err
 }
 
+// SqlResponse represents a Metabase API SQL response body.
 type SqlResponse struct {
-	Data SqlData `json:"data,omitempty"`
+	Context     string    `json:"context,omitempty"`
+	Data        SqlData   `json:"data,omitempty"`
+	Error       string    `json:"error,omitempty"`
+	JSONQuery   JSONQuery `json:"json_query"`
+	RowCount    int       `json:"row_count"`
+	RunningTime int       `json:"running_time"`
+	StartedAt   time.Time `json:"started_at"`
+	Status      string    `json:"status,omitempty"`
 }
 
 type SqlData struct {
 	Rows [][]interface{} `json:"rows,omitempty"`
+}
+
+type JSONQuery struct {
+	Database    int         `json:"database"`
+	Type        string      `json:"type"`
+	Constraints Constraints `json:"constraints"`
+}
+
+type Constraints struct {
+	MaxResults         int `json:"max-results"`
+	MaxResultsBareRows int `json:"max-results-bare-rows"`
 }
 
 func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (statictimeseries.DataSeries, error) {

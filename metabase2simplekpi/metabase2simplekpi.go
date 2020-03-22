@@ -11,7 +11,8 @@ func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {
 		cfg.MetabaseHttpClient,
 		cfg.MetabaseConfig.BaseUrl,
 		int64(dsInfo.MetabaseQueryDatabaseId),
-		dsInfo.MetabaseQueryNativeSQL)
+		dsInfo.NativeSQL())
+	//dsInfo.MetabaseQueryNativeSQL)
 	if err != nil {
 		return &SqlResponse{}, err
 	}
