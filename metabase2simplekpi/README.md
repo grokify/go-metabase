@@ -3,7 +3,7 @@
 ## Synopsis
 
 ```go
-    m2sCfg := metabase2simplekpi.Config{
+	m2sCfg := metabase2simplekpi.Config{
 		MetabaseConfig:  metabase.Config{...},
 		SimplekpiConfig: simplekpiutil.Config{...},
 		SimplekpiUserID: 111,
