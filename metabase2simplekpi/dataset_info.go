@@ -12,9 +12,9 @@ type DatasetInfo struct {
 	ExecMBQuery                  bool          `json:"execMBQuery"`
 	ExecSKUpdate                 bool          `json:"execSKUpdate"`
 	MetabaseQueryDatabaseId      int           `json:"metabaseQueryDatabaseId"`
-	MetabaseQueryNativeSQL       string        `json:"metabaseQuerySQLNative"`
-	MetabaseQueryNativeSQLFormat string        `json:"metabaseQuerySQLNativeFormat"`
-	MetabaseQueryNativeSQLVars   []interface{} `json:"metabaseQuerySQLNativeVars"`
+	MetabaseQueryNativeSQL       string        `json:"metabaseQueryNativeSQL"`
+	MetabaseQueryNativeSQLFormat string        `json:"metabaseQueryNativeSQLFormat"`
+	MetabaseQueryNativeSQLVars   []interface{} `json:"metabaseQueryNativeSQLVars"`
 	MetabaseQueryColIdxCount     int           `json:"metabaseQueryColIdxCount"`
 	MetabaseQueryColIdxDate      int           `json:"metabaseQueryColIdxDate"`
 	SimplekpiKpiId               int           `json:"simplekpiKpiId"`
