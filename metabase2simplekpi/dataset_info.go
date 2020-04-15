@@ -20,6 +20,10 @@ type DatasetInfo struct {
 	SimplekpiKpiId               int           `json:"simplekpiKpiId"`
 }
 
+func (dsi *DatasetInfo) Inflate() {
+	dsi.MetabaseQueryNativeSQL = dsi.NativeSQL()
+}
+
 // NativeSQL returns a formatted or raw SQL statement.
 func (dsi *DatasetInfo) NativeSQL() string {
 	dsi.MetabaseQueryNativeSQL = strings.TrimSpace(dsi.MetabaseQueryNativeSQL)
