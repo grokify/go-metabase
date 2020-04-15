@@ -26,9 +26,11 @@ func (dsi *DatasetInfo) NativeSQL() string {
 	dsi.MetabaseQueryNativeSQLFormat = strings.TrimSpace(dsi.MetabaseQueryNativeSQLFormat)
 	if len(dsi.MetabaseQueryNativeSQLFormat) > 0 {
 		if len(dsi.MetabaseQueryNativeSQLVars) > 0 {
-			return fmt.Sprintf(
+			nativeSQL := fmt.Sprintf(
 				dsi.MetabaseQueryNativeSQLFormat,
 				dsi.MetabaseQueryNativeSQLVars...)
+			dsi.MetabaseQueryNativeSQL = nativeSQL
+			return nativeSQL
 		}
 		return dsi.MetabaseQueryNativeSQLFormat
 	}
