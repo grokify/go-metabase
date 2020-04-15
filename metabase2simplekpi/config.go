@@ -2,35 +2,28 @@ package metabase2simplekpi
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-	"strings"
 
 	"github.com/grokify/go-simplekpi/simplekpi"
 	"github.com/grokify/go-simplekpi/simplekpiutil"
+	"github.com/grokify/gotilla/encoding/jsonutil"
+	"github.com/grokify/gotilla/fmt/fmtutil"
 	mo "github.com/grokify/oauth2more/metabase"
+	"github.com/pkg/errors"
 )
 
+// Config runs a set of Metabase to SimpleKPI queries.
+// Call Config.InitClients() and then Config.Exec()
+// or Config.ExecWriteCSVs().
 type Config struct {
 	MetabaseConfig     mo.Config
-	MetabaseHttpClient *http.Client
 	SimplekpiConfig    simplekpiutil.Config
 	SimplekpiUserID    int64
-	SimplekpiApiClient *simplekpi.APIClient
 	LoadSimpleKpi      bool
 	Datasets           []DatasetInfo
-}
-
-// DatasetInfo captures information for a single SQL query representing
-// data for a single KPI.
-type DatasetInfo struct {
-	KpiName                      string        `json:"kpiName"`
-	MetabaseQueryDatabaseId      int           `json:"metabaseQueryDatabaseId"`
-	MetabaseQueryNativeSQL       string        `json:"metabaseQuerySQLNative"`
-	MetabaseQueryNativeSQLFormat string        `json:"metabaseQuerySQLNativeFormat"`
-	MetabaseQueryNativeSQLVars   []interface{} `json:"metabaseQuerySQLNativeVars"`
-	MetabaseQueryColIdxCount     int           `json:"metabaseQueryColIdxCount"`
-	MetabaseQueryColIdxDate      int           `json:"metabaseQueryColIdxDate"`
-	SimplekpiKpiId               int           `json:"simplekpiKpiId"`
+	MetabaseHttpClient *http.Client
+	SimplekpiApiClient *simplekpi.APIClient
 }
 
 func (cfg *Config) InitClients() error {
@@ -68,17 +61,83 @@ func (cfg *Config) InitSimplekpiClient() error {
 	return nil
 }
 
-// NativeSQL returns a formatted or raw SQL statement.
-func (dsi *DatasetInfo) NativeSQL() string {
-	dsi.MetabaseQueryNativeSQL = strings.TrimSpace(dsi.MetabaseQueryNativeSQL)
-	dsi.MetabaseQueryNativeSQLFormat = strings.TrimSpace(dsi.MetabaseQueryNativeSQLFormat)
-	if len(dsi.MetabaseQueryNativeSQLFormat) > 0 {
-		if len(dsi.MetabaseQueryNativeSQLVars) > 0 {
-			return fmt.Sprintf(
-				dsi.MetabaseQueryNativeSQLFormat,
-				dsi.MetabaseQueryNativeSQLVars...)
+func (cfg *Config) Exec() error {
+	return ExecConfig(*cfg, func(ds DatasetInfo, sr *SqlResponse) error {
+		return nil
+	})
+}
+
+func (cfg *Config) ExecFunc(funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
+	return ExecConfig(*cfg, funcSqlResp)
+}
+
+func (cfg *Config) ExecWriteCSVs() error {
+	return ExecConfig(*cfg, WriteSQLResponseCSV)
+}
+
+func ExecConfig(m2sCfg Config, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
+	for _, ds := range m2sCfg.Datasets {
+		err := ExecDataset(m2sCfg, ds, funcSqlResp)
+		if err != nil {
+			return err
 		}
-		return dsi.MetabaseQueryNativeSQLFormat
 	}
-	return dsi.MetabaseQueryNativeSQL
+	return nil
+}
+
+func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
+	if !ds.ExecMBQuery {
+		return nil
+	}
+	sr, err := QueryMetabase(m2sCfg, ds)
+	if err != nil {
+		fmtutil.PrintJSON(ds)
+		fmt.Printf("NATIVE_SQL: %s\n", ds.NativeSQL())
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
+	}
+
+	if ds.ExecSKUpdate {
+		errs := UpdateSimpleKpiSqlResponse(m2sCfg, ds, sr)
+		if len(errs) > 0 {
+			bytes, err := ErrorsToJSON(errs)
+			if err != nil {
+				return errors.Wrap(err, "metabase2simplekpi.ExecDataset")
+			}
+			return fmt.Errorf(string(bytes))
+		}
+	}
+
+	if funcSqlResp != nil {
+		err := funcSqlResp(ds, sr)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func WriteSQLResponseCSV(ds DatasetInfo, sr *SqlResponse) error {
+	tbl, err := SqlResponseToTable(
+		sr, int64(ds.SimplekpiKpiId),
+		ds.MetabaseQueryColIdxCount,
+		ds.MetabaseQueryColIdxDate)
+	if err != nil {
+		return errors.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
+	}
+	filename := ds.KpiName + ".csv"
+	err = tbl.WriteCSV(filename)
+	if err != nil {
+		return errors.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
+	}
+	fmt.Printf("SUCCESS [%v]\n", filename)
+	return nil
+}
+
+func ErrorsToJSON(errs []error) ([]byte, error) {
+	errStrings := []string{}
+	for _, err := range errs {
+		errStrings = append(errStrings, err.Error())
+	}
+	return jsonutil.MarshalSimple(errStrings, "", "")
 }
