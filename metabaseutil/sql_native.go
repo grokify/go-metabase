@@ -64,6 +64,10 @@ func QuerySQLHttp(httpClient *http.Client, baseUrl string, databaseId int64, sql
 	return resp, err
 }
 
+type SqlData struct {
+	Rows [][]interface{} `json:"rows,omitempty"`
+}
+
 type SqlResponse struct {
 	Data SqlData `json:"data,omitempty"`
 }
@@ -80,10 +84,6 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 	sr := &SqlResponse{}
 	err := json.Unmarshal(bytes, sr)
 	return sr, err
-}
-
-type SqlData struct {
-	Rows [][]interface{} `json:"rows,omitempty"`
 }
 
 func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (statictimeseries.DataSeries, error) {
