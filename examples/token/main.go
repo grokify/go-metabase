@@ -5,10 +5,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/grokify/go-metabase/metabaseutil"
 	"github.com/grokify/gotilla/config"
 	"github.com/grokify/gotilla/fmt/fmtutil"
 	"github.com/grokify/gotilla/type/stringsutil"
-	"github.com/grokify/oauth2more/metabase"
 	mo "github.com/grokify/oauth2more/metabase"
 	"github.com/jessevdk/go-flags"
 )
@@ -37,11 +37,11 @@ func (opts *mbOptions) Inflate(mbCfg mo.Config) mo.Config {
 	return mbCfg
 }
 
-func main() {
+func initialize() (mbOptions, error) {
 	opts := mbOptions{}
 	_, err := flags.Parse(&opts)
 	if err != nil {
-		log.Fatal(err)
+		return opts, err
 	}
 
 	read, err := config.LoadDotEnvSkipEmptyInfo(
@@ -49,9 +49,17 @@ func main() {
 		os.Getenv("ENV_PATH"),
 		".env")
 	if err != nil {
-		log.Fatal(err)
+		return opts, err
 	}
 	fmtutil.PrintJSON(read)
+	return opts, nil
+}
+
+func main() {
+	opts, err := initialize()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	mbCfg := mo.Config{
 		BaseUrl:       os.Getenv("METABASE_BASE_URL"),
@@ -63,8 +71,9 @@ func main() {
 
 	fmtutil.PrintJSON(mbCfg)
 
-	_, authInfo, err := metabase.NewClientPassword(
-		mbCfg.BaseUrl, mbCfg.Username, mbCfg.Password, mbCfg.TlsSkipVerify)
+	_, authInfo, err := metabaseutil.NewApiClientPasswordWithSessionId(
+		mbCfg.BaseUrl, mbCfg.Username, mbCfg.Password, mbCfg.SessionId, mbCfg.TlsSkipVerify)
+
 	if err != nil {
 		log.Fatal(err)
 	}
