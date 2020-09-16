@@ -78,3 +78,7 @@ Auto-generated documentation is available here:
 * https://github.com/metabase/metabase/issues/5635
 
 `curl -XGET 'http://server/api/user/current' -H 'X-Metabase-Session: 38f4939c-ad7f-4cbe-ae54-30946daf8593'`
+
+Describe columns and column types:
+
+`describe mydatabase.mytable;`
