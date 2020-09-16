@@ -14,8 +14,8 @@ type SQLInfo struct {
 	Name        string
 	DatabaseID  int64
 	SQL         string
-	ColIdxCount int64
-	ColIdxDate  int64
+	ColIdxCount int
+	ColIdxDate  int
 }
 
 // Validate checks the parameter information before the
@@ -51,7 +51,8 @@ func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (statictime
 	if err != nil {
 		return ds, sqlResponse, err
 	}
-	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, 0, 1)
+	sts, err := SqlResponseToSTS(
+		opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxDate)
 	if err != nil {
 		return ds, sqlResponse, err
 	}
