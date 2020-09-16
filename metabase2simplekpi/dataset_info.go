@@ -9,14 +9,15 @@ import (
 // data for a single KPI.
 type DatasetInfo struct {
 	KpiName                      string        `json:"kpiName"`
-	ExecMBQuery                  bool          `json:"execMBQuery"`
-	ExecSKUpdate                 bool          `json:"execSKUpdate"`
+	MetricName                   string        `json:"metricName"`
+	MetabaseQueryExec            bool          `json:"metabaseExec"`
 	MetabaseQueryDatabaseId      int           `json:"metabaseQueryDatabaseId"`
 	MetabaseQueryNativeSQL       string        `json:"metabaseQueryNativeSQL"`
 	MetabaseQueryNativeSQLFormat string        `json:"metabaseQueryNativeSQLFormat"`
 	MetabaseQueryNativeSQLVars   []interface{} `json:"metabaseQueryNativeSQLVars"`
 	MetabaseQueryColIdxCount     int           `json:"metabaseQueryColIdxCount"`
 	MetabaseQueryColIdxDate      int           `json:"metabaseQueryColIdxDate"`
+	SimplekpiUpdateExec          bool          `json:"simplekpiExec"`
 	SimplekpiKpiId               int           `json:"simplekpiKpiId"`
 }
 

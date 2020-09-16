@@ -76,7 +76,8 @@ func (cfg *Config) ExecWriteCSVs() error {
 }
 
 func ExecConfig(m2sCfg Config, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
-	for _, ds := range m2sCfg.Datasets {
+	for i, ds := range m2sCfg.Datasets {
+		fmt.Printf("MB2SK_PROCESSING [%v/%v][%v][%v]\n", i, len(m2sCfg.Datasets), ds.KpiName, ds.MetabaseQueryExec)
 		err := ExecDataset(m2sCfg, ds, funcSqlResp)
 		if err != nil {
 			return err
@@ -86,7 +87,7 @@ func ExecConfig(m2sCfg Config, funcSqlResp func(ds DatasetInfo, sr *SqlResponse)
 }
 
 func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
-	if !ds.ExecMBQuery {
+	if !ds.MetabaseQueryExec {
 		return nil
 	}
 	sr, err := QueryMetabase(m2sCfg, ds)
@@ -96,7 +97,7 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
 	}
 
-	if ds.ExecSKUpdate {
+	if ds.SimplekpiUpdateExec {
 		errs := UpdateSimpleKpiSqlResponse(m2sCfg, ds, sr)
 		if len(errs) > 0 {
 			bytes, err := ErrorsToJSON(errs)
