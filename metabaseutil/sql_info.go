@@ -51,8 +51,7 @@ func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (statictime
 	if err != nil {
 		return ds, sqlResponse, err
 	}
-	sts, err := SqlResponseToSTS(
-		opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxDate)
+	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxDate)
 	if err != nil {
 		return ds, sqlResponse, err
 	}
