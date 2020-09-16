@@ -33,27 +33,26 @@ func (sqli *SQLInfo) Validate(checkColUnique bool) error {
 
 // QuerySTS executes a raw SQL query that is designed to provide
 // counts by date.
-func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (statictimeseries.DataSeries, *SqlResponse, error) {
-	ds := statictimeseries.NewDataSeries()
+func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
 	err := opts.Validate(true)
 	if err != nil {
-		return ds, nil, err
+		return nil, nil, err
 	}
 	resp, err := QuerySQLHttp(httpClient, baseURL, opts.DatabaseID, opts.SQL)
 	if err != nil {
-		return ds, nil, err
+		return nil, nil, err
 	}
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return ds, nil, err
+		return nil, nil, err
 	}
 	sqlResponse, err := NewSqlResponse(bytes)
 	if err != nil {
-		return ds, sqlResponse, err
+		return nil, sqlResponse, err
 	}
 	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxDate)
 	if err != nil {
-		return ds, sqlResponse, err
+		return nil, sqlResponse, err
 	}
-	return sts, sqlResponse, nil
+	return &sts, sqlResponse, nil
 }
