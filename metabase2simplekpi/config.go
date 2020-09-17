@@ -93,7 +93,7 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 	sr, err := QueryMetabase(m2sCfg, ds)
 	if err != nil {
 		fmtutil.PrintJSON(ds)
-		fmt.Printf("NATIVE_SQL: %s\n", ds.NativeSQL())
+		fmt.Printf("NATIVE_SQL: %s\n", ds.MetabaseQuery.NativeSQL())
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
 	}
 
@@ -121,8 +121,8 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 func WriteSQLResponseCSV(ds DatasetInfo, sr *SqlResponse) error {
 	tbl, err := SqlResponseToTable(
 		sr, int64(ds.SimplekpiKpiId),
-		ds.MetabaseQueryColIdxCount,
-		ds.MetabaseQueryColIdxDate)
+		ds.MetabaseQuery.ColIdxCount,
+		ds.MetabaseQuery.ColIdxTime)
 	if err != nil {
 		return errors.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
 	}

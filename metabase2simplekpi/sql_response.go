@@ -97,7 +97,6 @@ func SqlResponseToTable(sr *SqlResponse, kpiId int64, countColIdx, dateColIdx in
 		if err != nil {
 			return tbl, err
 		}
-		fmt.Printf("Count [%d] TIME [%v]\n", count, dt.Format(timeutil.RFC3339FullDate))
 		row := []string{
 			strconv.Itoa(int(kpiId)),
 			dt.Format(timeutil.RFC3339FullDate),

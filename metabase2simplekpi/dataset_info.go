@@ -1,30 +1,41 @@
 package metabase2simplekpi
 
 import (
-	"fmt"
 	"strings"
+
+	"github.com/grokify/go-metabase/metabaseutil"
 )
 
 // DatasetInfo captures information for a single SQL query representing
 // data for a single KPI.
 type DatasetInfo struct {
-	KpiName                      string        `json:"kpiName"`
-	MetricName                   string        `json:"metricName"`
-	MetabaseQueryExec            bool          `json:"metabaseExec"`
-	MetabaseQueryDatabaseId      int           `json:"metabaseQueryDatabaseId"`
-	MetabaseQueryNativeSQL       string        `json:"metabaseQueryNativeSQL"`
-	MetabaseQueryNativeSQLFormat string        `json:"metabaseQueryNativeSQLFormat"`
-	MetabaseQueryNativeSQLVars   []interface{} `json:"metabaseQueryNativeSQLVars"`
-	MetabaseQueryColIdxCount     int           `json:"metabaseQueryColIdxCount"`
-	MetabaseQueryColIdxDate      int           `json:"metabaseQueryColIdxDate"`
-	SimplekpiUpdateExec          bool          `json:"simplekpiExec"`
-	SimplekpiKpiId               int           `json:"simplekpiKpiId"`
+	KpiName             string               `json:"kpiName"`
+	MetricName          string               `json:"metricName"`
+	MetabaseQueryExec   bool                 `json:"metabaseExec"`
+	MetabaseQuery       metabaseutil.SQLInfo `json:"metabaseQuery"`
+	SimplekpiUpdateExec bool                 `json:"simplekpiExec"`
+	SimplekpiKpiId      int                  `json:"simplekpiKpiId"`
+	/*
+		MetabaseQueryDatabaseId      int                  `json:"metabaseQueryDatabaseId"`
+		MetabaseQueryNativeSQL       string               `json:"metabaseQueryNativeSQL"`
+		MetabaseQueryNativeSQLFormat string               `json:"metabaseQueryNativeSQLFormat"`
+		MetabaseQueryNativeSQLVars   []interface{}        `json:"metabaseQueryNativeSQLVars"`
+		MetabaseQueryColIdxCount     int                  `json:"metabaseQueryColIdxCount"`
+		MetabaseQueryColIdxDate      int                  `json:"metabaseQueryColIdxDate"`
+	*/
 }
 
 func (dsi *DatasetInfo) Inflate() {
-	dsi.MetabaseQueryNativeSQL = dsi.NativeSQL()
+	dsi.KpiName = strings.TrimSpace(dsi.KpiName)
+	dsi.MetabaseQuery.Inflate()
+	dsi.MetabaseQuery.Name = strings.TrimSpace(dsi.MetabaseQuery.Name)
+	if len(dsi.KpiName) > 0 && len(dsi.MetabaseQuery.Name) == 0 {
+		dsi.MetabaseQuery.Name = dsi.KpiName
+	}
+	//	dsi.MetabaseQueryNativeSQL = dsi.NativeSQL()
 }
 
+/*
 // NativeSQL returns a formatted or raw SQL statement.
 func (dsi *DatasetInfo) NativeSQL() string {
 	dsi.MetabaseQueryNativeSQL = strings.TrimSpace(dsi.MetabaseQueryNativeSQL)
@@ -41,3 +52,4 @@ func (dsi *DatasetInfo) NativeSQL() string {
 	}
 	return dsi.MetabaseQueryNativeSQL
 }
+*/

@@ -2,6 +2,7 @@ package metabaseutil
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -14,8 +15,29 @@ type SQLInfo struct {
 	Name        string
 	DatabaseID  int64
 	SQL         string
+	SQLFormat   string
+	SQLVars     []interface{}
 	ColIdxCount int
-	ColIdxDate  int
+	ColIdxTime  int
+}
+
+// Inflate expands data.
+func (sqli *SQLInfo) Inflate() {
+	sqli.SQL = sqli.NativeSQL()
+}
+
+// NativeSQL returns a formatted or raw SQL statement.
+func (sqli *SQLInfo) NativeSQL() string {
+	sqli.SQL = strings.TrimSpace(sqli.SQL)
+	sqli.SQLFormat = strings.TrimSpace(sqli.SQLFormat)
+	if len(sqli.SQLFormat) > 0 {
+		if len(sqli.SQLVars) > 0 {
+			return fmt.Sprintf(sqli.SQLFormat, sqli.SQLVars...)
+		} else if len(sqli.SQL) == 0 {
+			return sqli.SQLFormat
+		}
+	}
+	return sqli.SQL
 }
 
 // Validate checks the parameter information before the
@@ -25,7 +47,7 @@ func (sqli *SQLInfo) Validate(checkColUnique bool) error {
 	if len(sqli.SQL) == 0 {
 		return errors.New("E_SQL_QUERY_NOT_PRESENT")
 	}
-	if checkColUnique && sqli.ColIdxCount == sqli.ColIdxDate {
+	if checkColUnique && sqli.ColIdxCount == sqli.ColIdxTime {
 		return errors.New("E_COLIDX_COUNT_AND_DATE_SAME")
 	}
 	return nil
@@ -50,7 +72,7 @@ func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictim
 	if err != nil {
 		return nil, sqlResponse, err
 	}
-	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxDate)
+	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxTime)
 	if err != nil {
 		return nil, sqlResponse, err
 	}

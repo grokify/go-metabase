@@ -10,8 +10,8 @@ func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {
 	resp, err := metabaseutil.QuerySQLHttp(
 		cfg.MetabaseHttpClient,
 		cfg.MetabaseConfig.BaseUrl,
-		int64(dsInfo.MetabaseQueryDatabaseId),
-		dsInfo.NativeSQL())
+		dsInfo.MetabaseQuery.DatabaseID,
+		dsInfo.MetabaseQuery.NativeSQL())
 	if err != nil {
 		return &SqlResponse{}, err
 	}
@@ -24,9 +24,11 @@ func QueryMetabaseSTS(cfg Config, dsInfo DatasetInfo) (statictimeseries.DataSeri
 	if err != nil {
 		return sts, err
 	}
-	return SqlResponseToSTS(dsInfo.KpiName, sqlResp,
-		dsInfo.MetabaseQueryColIdxCount,
-		dsInfo.MetabaseQueryColIdxDate)
+	return SqlResponseToSTS(
+		dsInfo.KpiName,
+		sqlResp,
+		dsInfo.MetabaseQuery.ColIdxCount,
+		dsInfo.MetabaseQuery.ColIdxTime)
 }
 
 func UpdateSimpleKpi(cfg Config, dsInfo DatasetInfo) []error {
@@ -39,8 +41,8 @@ func UpdateSimpleKpi(cfg Config, dsInfo DatasetInfo) []error {
 
 func UpdateSimpleKpiSqlResponse(cfg Config, dsInfo DatasetInfo, sqlResp *SqlResponse) []error {
 	sts, err := SqlResponseToSTS(dsInfo.KpiName, sqlResp,
-		dsInfo.MetabaseQueryColIdxCount,
-		dsInfo.MetabaseQueryColIdxDate)
+		dsInfo.MetabaseQuery.ColIdxCount,
+		dsInfo.MetabaseQuery.ColIdxTime)
 	if err != nil {
 		return []error{err}
 	}

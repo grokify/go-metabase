@@ -86,12 +86,12 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 	return sr, err
 }
 
-func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (statictimeseries.DataSeries, error) {
+func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (statictimeseries.DataSeries, error) {
 	sts := statictimeseries.NewDataSeries()
 	sts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
-		dtStr := row[dateColIdx].(string)
+		dtStr := row[timeColIdx].(string)
 		dt, err := time.Parse(time.RFC3339, dtStr)
 		if err != nil {
 			return sts, err
