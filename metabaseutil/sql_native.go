@@ -47,8 +47,7 @@ func QuerySQLHttp(httpClient *http.Client, baseUrl string, databaseId int64, sql
 	qry := metabase.DatasetQueryJsonQuery{
 		Database: databaseId,
 		Type:     "native",
-		Native: metabase.DatasetQueryNative{
-			Query: sql},
+		Native:   metabase.DatasetQueryNative{Query: sql},
 		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
 	}
 
