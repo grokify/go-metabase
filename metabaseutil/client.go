@@ -15,6 +15,15 @@ import (
 
 const MaxPerPage = int64(2000)
 
+func NewApiClient(cfg mo.Config) (*metabase.APIClient, *mo.AuthResponse, error) {
+	httpClient, authResponse, err := mo.NewClient(cfg)
+	if err != nil {
+		return nil, authResponse, err
+	}
+	apiClient := NewApiClientHttpClient(cfg.BaseURL, httpClient)
+	return apiClient, authResponse, nil
+}
+
 func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId string, tlsSkipVerify bool) (*metabase.APIClient, *mo.AuthResponse, error) {
 	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
 		serverURL,
@@ -30,15 +39,6 @@ func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId 
 	apiConfig.BasePath = serverURL
 	apiConfig.HTTPClient = httpClient
 	return metabase.NewAPIClient(apiConfig), authResponse, nil
-}
-
-func NewApiClientConfig(cfg mo.Config) (*metabase.APIClient, *mo.AuthResponse, error) {
-	httpClient, authResponse, err := mo.NewClient(cfg)
-	if err != nil {
-		return nil, authResponse, err
-	}
-	apiClient := NewApiClientHttpClient(cfg.BaseUrl, httpClient)
-	return apiClient, authResponse, nil
 }
 
 func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, error) {
