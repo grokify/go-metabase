@@ -77,7 +77,8 @@ Auto-generated documentation is available here:
 * https://github.com/metabase/metabase/issues/2683
 * https://github.com/metabase/metabase/issues/5635
 
-`curl -XGET 'http://server/api/user/current' -H 'X-Metabase-Session: 38f4939c-ad7f-4cbe-ae54-30946daf8593'`
+* Current User: `curl -XGET 'http://server/api/user/current' -H 'X-Metabase-Session: 38f4939c-ad7f-4cbe-ae54-30946daf8593'`
+* Table: `curl -XGET 'https://base_url/api/table/1' -H 'X-Metabase-Session: 11112222-3333-4444-5555-666677778888'`
 
 Describe columns and column types:
 
