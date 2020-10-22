@@ -4,18 +4,61 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/antihax/optional"
 	"github.com/jessevdk/go-flags"
+	"github.com/pkg/errors"
 
 	"github.com/grokify/go-metabase/metabase"
 	"github.com/grokify/go-metabase/metabaseutil"
+	"github.com/grokify/gotilla/config"
+	"github.com/grokify/gotilla/fmt/fmtutil"
+	"github.com/grokify/gotilla/strconv/strconvutil"
+	mo "github.com/grokify/oauth2more/metabase"
 )
 
 type optionsDbList struct {
-	Site    string `short:"s" long:"site" description:"Your Site" required:"true"`
-	Token   string `short:"t" long:"token" description:"Your Token" required:"true"`
 	Verbose []bool `short:"v" long:"verbose" description:"Verbose - Include Tables" required:"false"`
+}
+
+func main() {
+	loaded, err := config.LoadDotEnvSkipEmptyInfo(os.Getenv("ENV_PATH"))
+	if err != nil {
+		log.Fatal(errors.Wrap(err, "E_LOAD_ENV"))
+	}
+	fmtutil.PrintJSON(loaded)
+
+	opts := optionsDbList{}
+	_, err = flags.Parse(&opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	clientCfg := mo.Config{
+		BaseURL:       os.Getenv("METABASE_BASE_URL"),
+		SessionID:     os.Getenv("METABASE_SESSION_ID"),
+		Username:      os.Getenv("METABASE_USERNAME"),
+		Password:      os.Getenv("METABASE_PASSWORD"),
+		TLSSkipVerify: strconvutil.MustParseBool(os.Getenv("METABASE_TLS_SKIP_VERIFY")),
+	}
+	err = clientCfg.Validate()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	apiClient, _, err := metabaseutil.NewApiClient(clientCfg)
+
+	verbose := false
+	if len(opts.Verbose) > 0 {
+		verbose = true
+	}
+	err = printDatabaseList(apiClient, verbose)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("DONE")
 }
 
 func printDatabaseList(apiClient *metabase.APIClient, verbose bool) error {
@@ -31,36 +74,15 @@ func printDatabaseList(apiClient *metabase.APIClient, verbose bool) error {
 	}
 
 	for _, db := range info {
-		fmt.Printf("DB_ID [%v] DB_NAME [%v]\n",
-			db.Id, db.Name)
+		fmt.Printf("DB_ID [%v] DB_NAME [%v]\n", db.Id, db.Name)
+		fmtutil.PrintJSON(db)
 		if verbose {
 			for _, tb := range db.Tables {
-				fmt.Printf("DB_ID [%v] DB_NAME [%v] TB_ID [%v] TB_NAME [%v]\n",
-					db.Id, db.Name, tb.Id, tb.Name)
+				fmt.Printf("DB_ID [%v] DB_NAME [%v] TB_ID [%v] TB_NAME [%v] [%v]\n",
+					db.Id, db.Name, tb.Id, tb.Name, tb)
+				fmtutil.PrintJSON(tb)
 			}
 		}
 	}
 	return nil
-}
-
-func main() {
-	opts := optionsDbList{}
-	_, err := flags.Parse(&opts)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	apiClient := metabaseutil.NewApiClientSessionId(
-		opts.Site, opts.Token, true)
-
-	verbose := false
-	if len(opts.Verbose) > 0 {
-		verbose = true
-	}
-	err = printDatabaseList(apiClient, verbose)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("DONE")
 }

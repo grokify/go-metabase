@@ -9,7 +9,7 @@ import (
 func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {
 	resp, err := metabaseutil.QuerySQLHttp(
 		cfg.MetabaseHttpClient,
-		cfg.MetabaseConfig.BaseUrl,
+		cfg.MetabaseConfig.BaseURL,
 		dsInfo.MetabaseQuery.DatabaseID,
 		dsInfo.MetabaseQuery.NativeSQL())
 	if err != nil {

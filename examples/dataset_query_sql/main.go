@@ -34,11 +34,11 @@ func main() {
 	fmtutil.PrintJSON(read)
 
 	mbCfg := mo.Config{
-		BaseUrl:       os.Getenv("METABASE_BASE_URL"),
+		BaseURL:       os.Getenv("METABASE_BASE_URL"),
 		Username:      os.Getenv("METABASE_USERNAME"),
 		Password:      os.Getenv("METABASE_PASSWORD"),
-		SessionId:     os.Getenv("METABASE_SESSION_ID"),
-		TlsSkipVerify: stringsutil.ToBool(os.Getenv("METABASE_TLS_SKIP_VERIFY"))}
+		SessionID:     os.Getenv("METABASE_SESSION_ID"),
+		TLSSkipVerify: stringsutil.ToBool(os.Getenv("METABASE_TLS_SKIP_VERIFY"))}
 
 	sqlInfo := metabaseutil.SQLInfo{}
 	err = json.Unmarshal([]byte(os.Getenv("METABASE_QUERY_SQL_INFO")), &sqlInfo)
@@ -54,7 +54,7 @@ func main() {
 		}
 		fmtutil.PrintJSON(authInfo)
 
-		sts, _, err := metabaseutil.QuerySTS(httpClient, mbCfg.BaseUrl, sqlInfo)
+		sts, _, err := metabaseutil.QuerySTS(httpClient, mbCfg.BaseURL, sqlInfo)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -62,7 +62,7 @@ func main() {
 	}
 
 	if 1 == 0 {
-		apiClient, authInfo, err := metabaseutil.NewApiClientConfig(mbCfg)
+		apiClient, authInfo, err := metabaseutil.NewApiClient(mbCfg)
 		if err != nil {
 			log.Fatal(err)
 		}

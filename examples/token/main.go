@@ -23,7 +23,7 @@ type mbOptions struct {
 
 func (opts *mbOptions) Inflate(mbCfg mo.Config) mo.Config {
 	if len(opts.Site) > 0 {
-		mbCfg.BaseUrl = opts.Site
+		mbCfg.BaseURL = opts.Site
 	}
 	if len(opts.Username) > 0 {
 		mbCfg.Username = opts.Username
@@ -32,7 +32,7 @@ func (opts *mbOptions) Inflate(mbCfg mo.Config) mo.Config {
 		mbCfg.Password = opts.Password
 	}
 	if len(opts.SessionId) > 0 {
-		mbCfg.SessionId = opts.SessionId
+		mbCfg.SessionID = opts.SessionId
 	}
 	return mbCfg
 }
@@ -62,17 +62,16 @@ func main() {
 	}
 
 	mbCfg := mo.Config{
-		BaseUrl:       os.Getenv("METABASE_BASE_URL"),
+		BaseURL:       os.Getenv("METABASE_BASE_URL"),
 		Username:      os.Getenv("METABASE_USERNAME"),
 		Password:      os.Getenv("METABASE_PASSWORD"),
-		SessionId:     os.Getenv("METABASE_SESSION_ID"),
-		TlsSkipVerify: stringsutil.ToBool(os.Getenv("METABASE_TLS_SKIP_VERIFY"))}
+		SessionID:     os.Getenv("METABASE_SESSION_ID"),
+		TLSSkipVerify: stringsutil.ToBool(os.Getenv("METABASE_TLS_SKIP_VERIFY"))}
 	mbCfg = opts.Inflate(mbCfg)
 
 	fmtutil.PrintJSON(mbCfg)
 
-	_, authInfo, err := metabaseutil.NewApiClientPasswordWithSessionId(
-		mbCfg.BaseUrl, mbCfg.Username, mbCfg.Password, mbCfg.SessionId, mbCfg.TlsSkipVerify)
+	_, authInfo, err := metabaseutil.NewApiClient(mbCfg)
 
 	if err != nil {
 		log.Fatal(err)
