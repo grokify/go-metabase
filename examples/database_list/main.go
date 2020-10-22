@@ -48,6 +48,9 @@ func main() {
 	}
 
 	apiClient, _, err := metabaseutil.NewApiClient(clientCfg)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	verbose := false
 	if len(opts.Verbose) > 0 {
