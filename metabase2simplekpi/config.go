@@ -75,6 +75,13 @@ func (cfg *Config) ExecWriteCSVs() error {
 	return ExecConfig(*cfg, WriteSQLResponseCSV)
 }
 
+func (cfg *Config) AddDatasets(datasets []DatasetInfo) {
+	if cfg.Datasets == nil {
+		cfg.Datasets = []DatasetInfo{}
+	}
+	cfg.Datasets = append(cfg.Datasets, datasets...)
+}
+
 func ExecConfig(m2sCfg Config, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
 	for i, ds := range m2sCfg.Datasets {
 		fmt.Printf("MB2SK_PROCESSING [%v/%v][%v][%v]\n", i, len(m2sCfg.Datasets), ds.KpiName, ds.MetabaseQueryExec)
