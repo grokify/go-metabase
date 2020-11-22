@@ -54,7 +54,7 @@ func main() {
 		}
 		fmtutil.PrintJSON(authInfo)
 
-		sts, _, err := metabaseutil.QuerySTS(httpClient, mbCfg.BaseURL, sqlInfo)
+		sts, _, err := metabaseutil.QueryDataSeries(httpClient, mbCfg.BaseURL, sqlInfo)
 		if err != nil {
 			log.Fatal(err)
 		}
