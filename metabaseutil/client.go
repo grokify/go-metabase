@@ -41,13 +41,13 @@ func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId 
 	return metabase.NewAPIClient(apiConfig), authResponse, nil
 }
 
-func NewApiClientEnv(cfg mo.InitConfig) (*metabase.APIClient, *mo.AuthResponse, error) {
-	httpClient, authResponse, err := mo.NewClientEnv(cfg)
+func NewApiClientEnv(cfg *mo.ConfigEnvOpts) (*metabase.APIClient, *mo.AuthResponse, error) {
+	httpClient, authResponse, _, err := mo.NewClientEnv(cfg)
 	if err != nil {
 		return nil, authResponse, err
 	}
 
-	apiClient := NewApiClientHttpClient(os.Getenv(cfg.EnvMetabaseBaseUrl), httpClient)
+	apiClient := NewApiClientHttpClient(os.Getenv(cfg.EnvMetabaseBaseURL), httpClient)
 	return apiClient, authResponse, nil
 }
 

@@ -53,9 +53,9 @@ func (sqli *SQLInfo) Validate(checkColUnique bool) error {
 	return nil
 }
 
-// QuerySTS executes a raw SQL query that is designed to provide
+// QueryDataSeries executes a raw SQL query that is designed to provide
 // counts by date.
-func QuerySTS(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
+func QueryDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
 	err := opts.Validate(true)
 	if err != nil {
 		return nil, nil, err
