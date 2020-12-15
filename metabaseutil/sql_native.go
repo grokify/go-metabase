@@ -27,9 +27,7 @@ func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (meta
 		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
 	}
 
-	info, resp, err := apiClient.DatasetApi.QueryDatabase(
-		context.Background(), opts)
-	return info, resp, err
+	return apiClient.DatasetApi.QueryDatabase(context.Background(), opts)
 }
 
 func QuerySQLHttpMore(httpClient *http.Client, baseUrl string, databaseId int64, sql string) (*SqlResponse, *http.Response, error) {
