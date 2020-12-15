@@ -22,8 +22,7 @@ func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (meta
 	opts := metabase.DatasetQueryJsonQuery{
 		Database: databaseId,
 		Type:     "native",
-		Native: metabase.DatasetQueryNative{
-			Query: sql},
+		Native:   metabase.DatasetQueryNative{Query: sql},
 		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
 	}
 
