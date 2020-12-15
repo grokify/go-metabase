@@ -19,14 +19,14 @@ const (
 )
 
 func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (metabase.DatasetQueryResults, *http.Response, error) {
-	opts := metabase.DatasetQueryJsonQuery{
-		Database: databaseId,
-		Type:     "native",
-		Native:   metabase.DatasetQueryNative{Query: sql},
-		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
-	}
-
-	return apiClient.DatasetApi.QueryDatabase(context.Background(), opts)
+	return apiClient.DatasetApi.QueryDatabase(
+		context.Background(),
+		metabase.DatasetQueryJsonQuery{
+			Database: databaseId,
+			Type:     "native",
+			Native:   metabase.DatasetQueryNative{Query: sql},
+			// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
+		})
 }
 
 func QuerySQLHttpMore(httpClient *http.Client, baseUrl string, databaseId int64, sql string) (*SqlResponse, *http.Response, error) {
