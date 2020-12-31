@@ -1,5 +1,6 @@
 # Metabase Go SDK
 
+
 [![Build Status][build-status-svg]][build-status-url]
 [![Go Report Card][goreport-svg]][goreport-url]
 [![Docs][docs-godoc-svg]][docs-godoc-url]
@@ -8,11 +9,11 @@
 [![Discuss][forum-svg]][forum-url]
 
  [build-status-svg]: https://github.com/grokify/go-metabase/workflows/build/badge.svg
- [build-status-link]: https://github.com/grokify/go-metabase/actions
+ [build-status-url]: https://github.com/grokify/go-metabase/actions
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/go-metabase
  [goreport-url]: https://goreportcard.com/report/github.com/grokify/go-metabase
  [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/go-metabase
- [docs-godoc-link]: https://pkg.go.dev/github.com/grokify/go-metabase
+ [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/go-metabase
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-url]: https://github.com/grokify/go-metabase/blob/master/LICENSE
  [gitter-svg]: https://badges.gitter.im/metabase/metabase.svg
