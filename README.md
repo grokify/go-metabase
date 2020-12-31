@@ -7,12 +7,12 @@
 [![Chat][gitter-svg]][gitter-url]
 [![Discuss][forum-svg]][forum-url]
 
- [build-status-svg]: https://api.travis-ci.org/grokify/go-metabase.svg?branch=master
- [build-status-url]: https://travis-ci.org/grokify/go-metabase
+ [build-status-svg]: https://github.com/grokify/go-metabase/workflows/build/badge.svg
+ [build-status-link]: https://github.com/grokify/go-metabase/actions
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/go-metabase
  [goreport-url]: https://goreportcard.com/report/github.com/grokify/go-metabase
- [docs-godoc-svg]: https://img.shields.io/badge/docs-godoc-blue.svg
- [docs-godoc-url]: https://godoc.org/github.com/grokify/go-metabase
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/go-metabase
+ [docs-godoc-link]: https://pkg.go.dev/github.com/grokify/go-metabase
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-url]: https://github.com/grokify/go-metabase/blob/master/LICENSE
  [gitter-svg]: https://badges.gitter.im/metabase/metabase.svg
