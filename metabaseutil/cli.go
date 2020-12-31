@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/grokify/go-metabase/metabase"
-	"github.com/grokify/gotilla/config"
-	"github.com/grokify/gotilla/fmt/fmtutil"
 	mo "github.com/grokify/oauth2more/metabase"
+	"github.com/grokify/simplego/config"
+	"github.com/grokify/simplego/fmt/fmtutil"
 )
 
 type AppConfig struct {

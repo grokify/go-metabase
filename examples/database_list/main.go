@@ -12,10 +12,10 @@ import (
 
 	"github.com/grokify/go-metabase/metabase"
 	"github.com/grokify/go-metabase/metabaseutil"
-	"github.com/grokify/gotilla/config"
-	"github.com/grokify/gotilla/fmt/fmtutil"
-	"github.com/grokify/gotilla/strconv/strconvutil"
 	mo "github.com/grokify/oauth2more/metabase"
+	"github.com/grokify/simplego/config"
+	"github.com/grokify/simplego/fmt/fmtutil"
+	"github.com/grokify/simplego/strconv/strconvutil"
 )
 
 type optionsDbList struct {

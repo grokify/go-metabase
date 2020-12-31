@@ -10,8 +10,8 @@ import (
 
 	"github.com/grokify/go-metabase/metabase"
 	"github.com/grokify/gocharts/data/statictimeseries"
-	"github.com/grokify/gotilla/net/httputilmore"
-	"github.com/grokify/gotilla/net/urlutil"
+	"github.com/grokify/simplego/net/httputilmore"
+	"github.com/grokify/simplego/net/urlutil"
 )
 
 const (
