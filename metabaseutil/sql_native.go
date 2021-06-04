@@ -15,7 +15,8 @@ import (
 )
 
 const (
-	ApiUrlDataset = "/api/dataset"
+	ApiUrlDataset   = "/api/dataset"
+	QueryTypeNative = "native"
 )
 
 func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (metabase.DatasetQueryResults, *http.Response, error) {
@@ -23,7 +24,7 @@ func QuerySQL(apiClient *metabase.APIClient, databaseId int64, sql string) (meta
 		context.Background(),
 		metabase.DatasetQueryJsonQuery{
 			Database: databaseId,
-			Type:     "native",
+			Type:     QueryTypeNative,
 			Native:   metabase.DatasetQueryNative{Query: sql},
 			// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
 		})
