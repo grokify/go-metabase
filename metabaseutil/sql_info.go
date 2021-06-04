@@ -53,22 +53,27 @@ func (sqli *SQLInfo) Validate(checkColUnique bool) error {
 	return nil
 }
 
-// QueryDataSeries executes a raw SQL query that is designed to provide
-// counts by date.
-func QueryDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
+// QuerySQLInfo executes a raw SQL query
+func QuerySQLInfo(httpClient *http.Client, baseURL string, opts SQLInfo) (*SqlResponse, error) {
 	err := opts.Validate(true)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	resp, err := QuerySQLHttp(httpClient, baseURL, opts.DatabaseID, opts.SQL)
+	resp, err := QuerySQLHttp(httpClient, baseURL, opts.DatabaseID, opts.NativeSQL())
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	bytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	sqlResponse, err := NewSqlResponse(bytes)
+	return NewSqlResponse(bytes)
+}
+
+// QuerySQLInfoDataSeries executes a raw SQL query that is designed to provide
+// counts by date.
+func QuerySQLInfoDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
+	sqlResponse, err := QuerySQLInfo(httpClient, baseURL, opts)
 	if err != nil {
 		return nil, sqlResponse, err
 	}
