@@ -47,6 +47,7 @@ func main() {
 	}
 	fmtutil.PrintJSON(sqlInfo)
 
+	timeSeries := false
 	if 1 == 1 {
 		httpClient, authInfo, err := mbCfg.NewClient()
 		if err != nil {
@@ -54,11 +55,19 @@ func main() {
 		}
 		fmtutil.PrintJSON(authInfo)
 
-		sts, _, err := metabaseutil.QueryDataSeries(httpClient, mbCfg.BaseURL, sqlInfo)
-		if err != nil {
-			log.Fatal(err)
+		if timeSeries {
+			sts, _, err := metabaseutil.QuerySQLInfoDataSeries(httpClient, mbCfg.BaseURL, sqlInfo)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmtutil.PrintJSON(sts)
+		} else {
+			sqlResp, err := metabaseutil.QuerySQLInfo(httpClient, mbCfg.BaseURL, sqlInfo)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmtutil.PrintJSON(sqlResp)
 		}
-		fmtutil.PrintJSON(sts)
 	}
 
 	if 1 == 0 {
