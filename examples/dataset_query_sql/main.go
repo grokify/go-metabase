@@ -56,7 +56,7 @@ func main() {
 		fmtutil.PrintJSON(authInfo)
 
 		if timeSeries {
-			sts, _, err := metabaseutil.QuerySQLInfoDataSeries(httpClient, mbCfg.BaseURL, sqlInfo)
+			sts, _, err := metabaseutil.QuerySQLInfoTimeSeries(httpClient, mbCfg.BaseURL, sqlInfo)
 			if err != nil {
 				log.Fatal(err)
 			}

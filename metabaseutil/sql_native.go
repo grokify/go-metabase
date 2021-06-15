@@ -83,7 +83,7 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 	return sr, err
 }
 
-func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (timeseries.TimeSeries, error) {
+func SqlResponseToTimeSeries(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (timeseries.TimeSeries, error) {
 	sts := timeseries.NewTimeSeries()
 	sts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {

@@ -70,14 +70,14 @@ func QuerySQLInfo(httpClient *http.Client, baseURL string, opts SQLInfo) (*SqlRe
 	return NewSqlResponse(bytes)
 }
 
-// QuerySQLInfoDataSeries executes a raw SQL query that is designed to provide
+// QuerySQLInfoTimeSeries executes a raw SQL query that is designed to provide
 // counts by date.
-func QuerySQLInfoDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*timeseries.TimeSeries, *SqlResponse, error) {
+func QuerySQLInfoTimeSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*timeseries.TimeSeries, *SqlResponse, error) {
 	sqlResponse, err := QuerySQLInfo(httpClient, baseURL, opts)
 	if err != nil {
 		return nil, sqlResponse, err
 	}
-	sts, err := SqlResponseToSTS(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxTime)
+	sts, err := SqlResponseToTimeSeries(opts.Name, sqlResponse, opts.ColIdxCount, opts.ColIdxTime)
 	if err != nil {
 		return nil, sqlResponse, err
 	}

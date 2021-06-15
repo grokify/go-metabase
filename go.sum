@@ -306,8 +306,9 @@ github.com/grokify/go-simplekpi v0.1.0 h1:sBTc0mONYpBWeP9lSuy5SwmQU0FwfluZeCw0N7
 github.com/grokify/go-simplekpi v0.1.0/go.mod h1:y1igl1kdhYx3AmvbohjmAiLFmGwqrpQZnNHveiyZ2r4=
 github.com/grokify/gocharts v0.0.1/go.mod h1:BDeRs4KLAvDqOKHTHEXJc61sWm6fuiAoTS5MPcaAKIk=
 github.com/grokify/gocharts v1.3.0/go.mod h1:uhe0lH04KtJuYRuzreaujjYZ/8x53Numw8JN/sa2/fw=
-github.com/grokify/gocharts v1.7.0 h1:hHzhdu1oqm/acHFKOeN7scW61d4xX6xcVxcididwJA0=
 github.com/grokify/gocharts v1.7.0/go.mod h1:L69qGvVjBaWFgxT6Wpjb/oJURmzEGnVQ+M4hJ+ndQDQ=
+github.com/grokify/gocharts v1.7.1 h1:2v85uslRLgIojqD4ZC2LpiDMALNM3k4+w4tl7NK/iNE=
+github.com/grokify/gocharts v1.7.1/go.mod h1:L69qGvVjBaWFgxT6Wpjb/oJURmzEGnVQ+M4hJ+ndQDQ=
 github.com/grokify/googleutil v0.0.2/go.mod h1:BYVzl9bkG4E7b3bs0OC7a0bGGFwufrs1aAEiCATOvSs=
 github.com/grokify/gostor v0.1.0/go.mod h1:9H4RrxFpqpuySrCndBJtyhkgoDbKFXyUEoY/chxhuVM=
 github.com/grokify/gostor v0.1.1/go.mod h1:whP8FD7yG6ucyiy4ZBZzjlb0jzdaGEpIAd3Pd8CVjds=
