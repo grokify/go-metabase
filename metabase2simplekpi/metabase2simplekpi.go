@@ -3,7 +3,7 @@ package metabase2simplekpi
 import (
 	"github.com/grokify/go-metabase/metabaseutil"
 	"github.com/grokify/go-simplekpi/simplekpiutil"
-	"github.com/grokify/gocharts/data/statictimeseries"
+	"github.com/grokify/gocharts/data/timeseries"
 )
 
 func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {
@@ -18,13 +18,13 @@ func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {
 	return HTTPResponseToSqlResponse(resp)
 }
 
-func QueryMetabaseSTS(cfg Config, dsInfo DatasetInfo) (statictimeseries.DataSeries, error) {
-	sts := statictimeseries.DataSeries{}
+func QueryMetabaseTS(cfg Config, dsInfo DatasetInfo) (timeseries.TimeSeries, error) {
+	ts := timeseries.TimeSeries{}
 	sqlResp, err := QueryMetabase(cfg, dsInfo)
 	if err != nil {
-		return sts, err
+		return ts, err
 	}
-	return SqlResponseToSTS(
+	return SqlResponseToTS(
 		dsInfo.KpiName,
 		sqlResp,
 		dsInfo.MetabaseQuery.ColIdxCount,
@@ -32,29 +32,29 @@ func QueryMetabaseSTS(cfg Config, dsInfo DatasetInfo) (statictimeseries.DataSeri
 }
 
 func UpdateSimpleKpi(cfg Config, dsInfo DatasetInfo) []error {
-	sts, err := QueryMetabaseSTS(cfg, dsInfo)
+	sts, err := QueryMetabaseTS(cfg, dsInfo)
 	if err != nil {
 		return []error{err}
 	}
-	return UpdateSimpleKpiSTS(cfg, dsInfo, sts)
+	return UpdateSimpleKpiTS(cfg, dsInfo, sts)
 }
 
 func UpdateSimpleKpiSqlResponse(cfg Config, dsInfo DatasetInfo, sqlResp *SqlResponse) []error {
-	sts, err := SqlResponseToSTS(dsInfo.KpiName, sqlResp,
+	ts, err := SqlResponseToTS(dsInfo.KpiName, sqlResp,
 		dsInfo.MetabaseQuery.ColIdxCount,
 		dsInfo.MetabaseQuery.ColIdxTime)
 	if err != nil {
 		return []error{err}
 	}
-	return UpdateSimpleKpiSTS(cfg, dsInfo, sts)
+	return UpdateSimpleKpiTS(cfg, dsInfo, ts)
 }
 
-func UpdateSimpleKpiSTS(cfg Config, dsInfo DatasetInfo, sts statictimeseries.DataSeries) []error {
+func UpdateSimpleKpiTS(cfg Config, dsInfo DatasetInfo, ts timeseries.TimeSeries) []error {
 	_, resps, err := simplekpiutil.UpsertKpiEntriesStaticTimeSeries(
 		cfg.SimplekpiApiClient,
 		int64(cfg.SimplekpiUserID),
 		int64(dsInfo.SimplekpiKpiId),
-		sts)
+		ts)
 	if err != nil {
 		return []error{err}
 	}

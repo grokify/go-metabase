@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/grokify/go-metabase/metabase"
-	"github.com/grokify/gocharts/data/statictimeseries"
+	"github.com/grokify/gocharts/data/timeseries"
 	"github.com/grokify/simplego/net/httputilmore"
 	"github.com/grokify/simplego/net/urlutil"
 )
@@ -83,8 +83,8 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 	return sr, err
 }
 
-func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (statictimeseries.DataSeries, error) {
-	sts := statictimeseries.NewDataSeries()
+func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (timeseries.TimeSeries, error) {
+	sts := timeseries.NewTimeSeries()
 	sts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
@@ -93,7 +93,7 @@ func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, timeColId
 		if err != nil {
 			return sts, err
 		}
-		item := statictimeseries.DataItem{
+		item := timeseries.TimeItem{
 			SeriesName: seriesName,
 			Value:      int64(count),
 			Time:       dt}

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/grokify/gocharts/data/statictimeseries"
 	"github.com/grokify/gocharts/data/table"
+	"github.com/grokify/gocharts/data/timeseries"
 	"github.com/grokify/simplego/time/timeutil"
 	"github.com/pkg/errors"
 )
@@ -68,8 +68,8 @@ type Constraints struct {
 	MaxResultsBareRows int `json:"max-results-bare-rows"`
 }
 
-func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (statictimeseries.DataSeries, error) {
-	sts := statictimeseries.NewDataSeries()
+func SqlResponseToTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (timeseries.TimeSeries, error) {
+	sts := timeseries.NewTimeSeries()
 	sts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
@@ -78,7 +78,7 @@ func SqlResponseToSTS(seriesName string, sr *SqlResponse, countColIdx, dateColId
 		if err != nil {
 			return sts, err
 		}
-		item := statictimeseries.DataItem{
+		item := timeseries.TimeItem{
 			SeriesName: seriesName,
 			Value:      int64(count),
 			Time:       dt}
@@ -104,6 +104,6 @@ func SqlResponseToTable(sr *SqlResponse, kpiId int64, countColIdx, dateColIdx in
 		rows = append(rows, row)
 	}
 	tbl.Columns = cols
-	tbl.Records = rows
+	tbl.Rows = rows
 	return tbl, nil
 }

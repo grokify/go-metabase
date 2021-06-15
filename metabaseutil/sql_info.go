@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/grokify/gocharts/data/statictimeseries"
+	"github.com/grokify/gocharts/data/timeseries"
 )
 
 // SQLInfo holds the information for a SQL query.
@@ -72,7 +72,7 @@ func QuerySQLInfo(httpClient *http.Client, baseURL string, opts SQLInfo) (*SqlRe
 
 // QuerySQLInfoDataSeries executes a raw SQL query that is designed to provide
 // counts by date.
-func QuerySQLInfoDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*statictimeseries.DataSeries, *SqlResponse, error) {
+func QuerySQLInfoDataSeries(httpClient *http.Client, baseURL string, opts SQLInfo) (*timeseries.TimeSeries, *SqlResponse, error) {
 	sqlResponse, err := QuerySQLInfo(httpClient, baseURL, opts)
 	if err != nil {
 		return nil, sqlResponse, err
