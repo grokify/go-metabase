@@ -84,7 +84,7 @@ func (cfg *Config) AddDatasets(datasets []DatasetInfo) {
 
 func ExecConfig(m2sCfg Config, funcSqlResp func(ds DatasetInfo, sr *SqlResponse) error) error {
 	for i, ds := range m2sCfg.Datasets {
-		fmt.Printf("MB2SK_PROCESSING [%v/%v][%v][%v]\n", i, len(m2sCfg.Datasets), ds.KpiName, ds.MetabaseQueryExec)
+		fmt.Printf("MB2SK_PROCESSING [%v/%v][%v][%v]\n", i+1, len(m2sCfg.Datasets), ds.KpiName, ds.MetabaseQueryExec)
 		err := ExecDataset(m2sCfg, ds, funcSqlResp)
 		if err != nil {
 			return err
