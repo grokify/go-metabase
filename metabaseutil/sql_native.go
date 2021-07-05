@@ -84,20 +84,19 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 }
 
 func SqlResponseToTimeSeries(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (timeseries.TimeSeries, error) {
-	sts := timeseries.NewTimeSeries()
-	sts.SeriesName = seriesName
+	ts := timeseries.NewTimeSeries()
+	ts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
 		dtStr := row[timeColIdx].(string)
 		dt, err := time.Parse(time.RFC3339, dtStr)
 		if err != nil {
-			return sts, err
+			return ts, err
 		}
-		item := timeseries.TimeItem{
+		ts.AddItems(timeseries.TimeItem{
 			SeriesName: seriesName,
 			Value:      int64(count),
-			Time:       dt}
-		sts.AddItem(item)
+			Time:       dt})
 	}
-	return sts, nil
+	return ts, nil
 }

@@ -69,22 +69,21 @@ type Constraints struct {
 }
 
 func SqlResponseToTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (timeseries.TimeSeries, error) {
-	sts := timeseries.NewTimeSeries()
-	sts.SeriesName = seriesName
+	ts := timeseries.NewTimeSeries()
+	ts.SeriesName = seriesName
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
 		dtStr := row[dateColIdx].(string)
 		dt, err := time.Parse(time.RFC3339, dtStr)
 		if err != nil {
-			return sts, err
+			return ts, err
 		}
-		item := timeseries.TimeItem{
+		ts.AddItems(timeseries.TimeItem{
 			SeriesName: seriesName,
 			Value:      int64(count),
-			Time:       dt}
-		sts.AddItem(item)
+			Time:       dt})
 	}
-	return sts, nil
+	return ts, nil
 }
 
 func SqlResponseToTable(sr *SqlResponse, kpiId int64, countColIdx, dateColIdx int) (table.Table, error) {
