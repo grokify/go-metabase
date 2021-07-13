@@ -87,7 +87,7 @@ func SqlResponseToTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx
 }
 
 func SqlResponseToTable(sr *SqlResponse, kpiId int64, countColIdx, dateColIdx int) (table.Table, error) {
-	tbl := table.NewTable()
+	tbl := table.NewTable("")
 	cols := []string{"KPI ID", "Date", "Actual"}
 	rows := [][]string{}
 	for _, row := range sr.Data.Rows {
