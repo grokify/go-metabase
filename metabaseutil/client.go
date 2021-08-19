@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -108,7 +107,7 @@ func (recs *Records) FilterRecordsStringOr(key string, vals []string) RecordsSet
 
 func NewRecordsFromJsonFile(file string) (Records, error) {
 	recs := Records{}
-	bytes, err := ioutil.ReadFile(file)
+	bytes, err := os.ReadFile(file)
 	if err != nil {
 		return recs, err
 	}

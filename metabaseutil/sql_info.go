@@ -3,7 +3,7 @@ package metabaseutil
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -63,7 +63,7 @@ func QuerySQLInfo(httpClient *http.Client, baseURL string, opts SQLInfo) (*SqlRe
 	if err != nil {
 		return nil, err
 	}
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}

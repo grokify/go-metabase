@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -70,7 +70,7 @@ type SqlResponse struct {
 }
 
 func NewSqlResponseHttp(resp *http.Response) (*SqlResponse, error) {
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +84,7 @@ func NewSqlResponse(bytes []byte) (*SqlResponse, error) {
 }
 
 func SqlResponseToTimeSeries(seriesName string, sr *SqlResponse, countColIdx, timeColIdx int) (timeseries.TimeSeries, error) {
-	ts := timeseries.NewTimeSeries()
-	ts.SeriesName = seriesName
+	ts := timeseries.NewTimeSeries(seriesName)
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
 		dtStr := row[timeColIdx].(string)

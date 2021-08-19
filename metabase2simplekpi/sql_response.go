@@ -3,7 +3,7 @@ package metabase2simplekpi
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -17,7 +17,7 @@ import (
 
 // HTTPResponseToSqlResponse parses a Metabase SQL response.
 func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
-	bytes, err := ioutil.ReadAll(resp.Body)
+	bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, errors.Wrap(err, "E_METABASE_API_READ_BODY_ERROR")
 	} else if resp.StatusCode >= 300 {
@@ -69,8 +69,7 @@ type Constraints struct {
 }
 
 func SqlResponseToTS(seriesName string, sr *SqlResponse, countColIdx, dateColIdx int) (timeseries.TimeSeries, error) {
-	ts := timeseries.NewTimeSeries()
-	ts.SeriesName = seriesName
+	ts := timeseries.NewTimeSeries(seriesName)
 	for _, row := range sr.Data.Rows {
 		count := row[countColIdx].(float64)
 		dtStr := row[dateColIdx].(string)
