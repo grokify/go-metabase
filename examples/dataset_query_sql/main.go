@@ -12,7 +12,7 @@ import (
 	"github.com/jessevdk/go-flags"
 
 	"github.com/grokify/go-metabase/metabaseutil"
-	mo "github.com/grokify/oauth2more/metabase"
+	mo "github.com/grokify/goauth/metabase"
 )
 
 type Options struct {

@@ -1,6 +1,5 @@
 # Metabase Go SDK
 
-
 [![Build Status][build-status-svg]][build-status-url]
 [![Go Report Card][goreport-svg]][goreport-url]
 [![Docs][docs-godoc-svg]][docs-godoc-url]

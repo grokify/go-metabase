@@ -4,11 +4,11 @@ go 1.16
 
 require (
 	github.com/antihax/optional v1.0.0
-	github.com/grokify/go-simplekpi v0.1.6
-	github.com/grokify/gocharts v1.15.0
-	github.com/grokify/oauth2more v0.6.1
-	github.com/grokify/simplego v0.30.2
+	github.com/grokify/go-simplekpi v0.1.8
+	github.com/grokify/goauth v0.10.0
+	github.com/grokify/gocharts v1.16.1
+	github.com/grokify/simplego v0.30.13
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/pkg/errors v0.9.1
-	golang.org/x/oauth2 v0.0.0-20210817223510-7df4dd6e12ab
+	golang.org/x/oauth2 v0.0.0-20211005180243-6b3c2da341f1
 )

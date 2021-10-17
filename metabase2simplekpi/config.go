@@ -7,7 +7,7 @@ import (
 
 	"github.com/grokify/go-simplekpi/simplekpi"
 	"github.com/grokify/go-simplekpi/simplekpiutil"
-	mo "github.com/grokify/oauth2more/metabase"
+	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/simplego/encoding/jsonutil"
 	"github.com/grokify/simplego/fmt/fmtutil"
 	"github.com/pkg/errors"

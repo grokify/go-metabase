@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/grokify/go-metabase/metabase"
-	mo "github.com/grokify/oauth2more/metabase"
+	mo "github.com/grokify/goauth/metabase"
 )
 
 const MaxPerPage = int64(2000)

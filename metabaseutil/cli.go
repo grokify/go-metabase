@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/grokify/go-metabase/metabase"
-	mo "github.com/grokify/oauth2more/metabase"
+	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/simplego/config"
 	"github.com/grokify/simplego/fmt/fmtutil"
 )
