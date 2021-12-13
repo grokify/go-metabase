@@ -7,8 +7,8 @@ import (
 
 	"github.com/grokify/go-metabase/metabase"
 	mo "github.com/grokify/goauth/metabase"
-	"github.com/grokify/simplego/config"
-	"github.com/grokify/simplego/fmt/fmtutil"
+	"github.com/grokify/mogo/config"
+	"github.com/grokify/mogo/fmt/fmtutil"
 )
 
 type AppConfig struct {

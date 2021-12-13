@@ -8,8 +8,8 @@ import (
 	"github.com/grokify/go-simplekpi/simplekpi"
 	"github.com/grokify/go-simplekpi/simplekpiutil"
 	mo "github.com/grokify/goauth/metabase"
-	"github.com/grokify/simplego/encoding/jsonutil"
-	"github.com/grokify/simplego/fmt/fmtutil"
+	"github.com/grokify/mogo/encoding/jsonutil"
+	"github.com/grokify/mogo/fmt/fmtutil"
 	"github.com/pkg/errors"
 )
 
