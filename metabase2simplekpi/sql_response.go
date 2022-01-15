@@ -11,15 +11,15 @@ import (
 
 	"github.com/grokify/gocharts/data/table"
 	"github.com/grokify/gocharts/data/timeseries"
+	"github.com/grokify/mogo/errors/errorsutil"
 	"github.com/grokify/mogo/time/timeutil"
-	"github.com/pkg/errors"
 )
 
 // HTTPResponseToSqlResponse parses a Metabase SQL response.
 func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	bytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, errors.Wrap(err, "E_METABASE_API_READ_BODY_ERROR")
+		return nil, errorsutil.Wrap(err, "E_METABASE_API_READ_BODY_ERROR")
 	} else if resp.StatusCode >= 300 {
 		return nil, fmt.Errorf("E_METABASE_API_ERROR STATUS[%v] MSG[%v]",
 			resp.StatusCode, strings.TrimSpace(string(bytes)))
@@ -28,7 +28,7 @@ func HTTPResponseToSqlResponse(resp *http.Response) (*SqlResponse, error) {
 	sr := &SqlResponse{}
 	err = json.Unmarshal(bytes, sr)
 	if err != nil {
-		err = errors.Wrap(err, "E_METABASE_API_RESPONSE_JSON_DECODE")
+		err = errorsutil.Wrap(err, "E_METABASE_API_RESPONSE_JSON_DECODE")
 	} else if len(strings.TrimSpace(sr.Error)) > 0 {
 		sr.Error = strings.TrimSpace(sr.Error)
 		sr.Status = strings.TrimSpace(sr.Status)

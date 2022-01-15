@@ -9,8 +9,8 @@ import (
 	"github.com/grokify/go-simplekpi/simplekpiutil"
 	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/mogo/encoding/jsonutil"
+	"github.com/grokify/mogo/errors/errorsutil"
 	"github.com/grokify/mogo/fmt/fmtutil"
-	"github.com/pkg/errors"
 )
 
 // Config runs a set of Metabase to SimpleKPI queries.
@@ -101,7 +101,7 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 	if err != nil {
 		fmtutil.PrintJSON(ds)
 		fmt.Printf("NATIVE_SQL: %s\n", ds.MetabaseQuery.NativeSQL())
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
+		log.Fatal(errorsutil.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
 	}
 
 	if ds.SimplekpiUpdateExec {
@@ -109,7 +109,7 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 		if len(errs) > 0 {
 			bytes, err := ErrorsToJSON(errs)
 			if err != nil {
-				return errors.Wrap(err, "metabase2simplekpi.ExecDataset")
+				return errorsutil.Wrap(err, "metabase2simplekpi.ExecDataset")
 			}
 			return fmt.Errorf(string(bytes))
 		}
@@ -131,12 +131,12 @@ func WriteSQLResponseCSV(ds DatasetInfo, sr *SqlResponse) error {
 		ds.MetabaseQuery.ColIdxCount,
 		ds.MetabaseQuery.ColIdxTime)
 	if err != nil {
-		return errors.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
+		return errorsutil.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
 	}
 	filename := ds.KpiName + ".csv"
 	err = tbl.WriteCSV(filename)
 	if err != nil {
-		return errors.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
+		return errorsutil.Wrap(err, "metabase2simplekpi.WriteSQLResponseCSV")
 	}
 	fmt.Printf("SUCCESS [%v]\n", filename)
 	return nil

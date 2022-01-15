@@ -8,12 +8,12 @@ import (
 
 	"github.com/antihax/optional"
 	"github.com/jessevdk/go-flags"
-	"github.com/pkg/errors"
 
 	"github.com/grokify/go-metabase/metabase"
 	"github.com/grokify/go-metabase/metabaseutil"
 	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/mogo/config"
+	"github.com/grokify/mogo/errors/errorsutil"
 	"github.com/grokify/mogo/fmt/fmtutil"
 	"github.com/grokify/mogo/strconv/strconvutil"
 )
@@ -25,7 +25,7 @@ type optionsDbList struct {
 func main() {
 	loaded, err := config.LoadDotEnvSkipEmptyInfo(os.Getenv("ENV_PATH"))
 	if err != nil {
-		log.Fatal(errors.Wrap(err, "E_LOAD_ENV"))
+		log.Fatal(errorsutil.Wrap(err, "E_LOAD_ENV"))
 	}
 	fmtutil.PrintJSON(loaded)
 
