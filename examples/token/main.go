@@ -77,7 +77,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("ID: %s\n", authInfo.Id)
+	fmt.Printf("ID: %s\n", authInfo.ID)
 
 	fmt.Println("DONE")
 }

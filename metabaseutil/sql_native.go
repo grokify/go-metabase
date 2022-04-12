@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/grokify/go-metabase/metabase"
-	"github.com/grokify/gocharts/data/timeseries"
+	"github.com/grokify/gocharts/v2/data/timeseries"
 	"github.com/grokify/mogo/net/httputilmore"
 	"github.com/grokify/mogo/net/urlutil"
 )
@@ -56,7 +56,7 @@ func QuerySQLHttp(httpClient *http.Client, baseUrl string, databaseId int64, sql
 
 	resp, err := httpClient.Post(
 		apiUrl,
-		httputilmore.ContentTypeAppJsonUtf8,
+		httputilmore.ContentTypeAppJSONUtf8,
 		bytes.NewBuffer(qryJSON))
 	return resp, err
 }

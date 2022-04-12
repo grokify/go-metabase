@@ -24,7 +24,7 @@ func NewApiClient(cfg mo.Config) (*metabase.APIClient, *mo.AuthResponse, error) 
 }
 
 func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId string, tlsSkipVerify bool) (*metabase.APIClient, *mo.AuthResponse, error) {
-	httpClient, authResponse, err := mo.NewClientPasswordWithSessionId(
+	httpClient, authResponse, err := mo.NewClientPasswordWithSessionID(
 		serverURL,
 		username,
 		password,
@@ -61,7 +61,7 @@ func NewApiClientSessionId(serverUrl, token string, tlsSkipVerify bool) *metabas
 	return metabase.NewAPIClient(
 		&metabase.Configuration{
 			BasePath:   serverUrl,
-			HTTPClient: mo.NewClientSessionId(token, tlsSkipVerify)})
+			HTTPClient: mo.NewClientSessionID(token, tlsSkipVerify)})
 }
 
 type Records struct {

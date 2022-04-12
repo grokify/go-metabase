@@ -3,7 +3,7 @@ package metabase2simplekpi
 import (
 	"github.com/grokify/go-metabase/metabaseutil"
 	"github.com/grokify/go-simplekpi/simplekpiutil"
-	"github.com/grokify/gocharts/data/timeseries"
+	"github.com/grokify/gocharts/v2/data/timeseries"
 )
 
 func QueryMetabase(cfg Config, dsInfo DatasetInfo) (*SqlResponse, error) {

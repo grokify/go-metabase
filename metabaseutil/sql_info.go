@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/grokify/gocharts/data/timeseries"
+	"github.com/grokify/gocharts/v2/data/timeseries"
 )
 
 // SQLInfo holds the information for a SQL query.
