@@ -7,7 +7,7 @@
 [![Chat][gitter-svg]][gitter-url]
 [![Discuss][forum-svg]][forum-url]
 
- [build-status-svg]: https://github.com/grokify/go-metabase/workflows/go%20build/badge.svg
+ [build-status-svg]: https://github.com/grokify/go-metabase/workflows/test/badge.svg
  [build-status-url]: https://github.com/grokify/go-metabase/actions
  [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/go-metabase
  [goreport-url]: https://goreportcard.com/report/github.com/grokify/go-metabase
