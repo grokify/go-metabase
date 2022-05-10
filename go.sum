@@ -236,8 +236,9 @@ github.com/grokify/goauth v0.13.4/go.mod h1:HxSsWAxCHIoZfi2j+nNH+n6mapDf5yCXiJcD
 github.com/grokify/goauth v0.13.5 h1:NE5FcYah8VPOnelkDzX9Ft5NhFnsK13LaOZIyiz8YPk=
 github.com/grokify/goauth v0.13.5/go.mod h1:NAfwApSUFhSc+v91DUcoDdUpmddfdL2hZInsLp4h9To=
 github.com/grokify/gocharts/v2 v2.4.1/go.mod h1:rfKIZT84ndxlIBmVB06nkGE+NwsXK8lO8GCEje8Zrjs=
-github.com/grokify/gocharts/v2 v2.6.2 h1:KrJ8sNWNnpHzRt+EhsDg4BcZ0kpDXD43GC1ysVi2CfE=
 github.com/grokify/gocharts/v2 v2.6.2/go.mod h1:xBU3FCaWZSlkxPG7G/+qRQv6DwB4/Wo0PeWhOTUiBiw=
+github.com/grokify/gocharts/v2 v2.7.2 h1:FrKDr0RIHpRFcqklsFbkfwBKA0zN5Knlcxl4vbUbGQQ=
+github.com/grokify/gocharts/v2 v2.7.2/go.mod h1:lZixG0ajJkk2QzZlvZOkDvnEQJC2nUGJ4zz3Sm9hvio=
 github.com/grokify/gohttp v0.2.1/go.mod h1:lvWGlBA0PeelznQ5fFlr9GRbNOCsY86q5dmY9FqSlxE=
 github.com/grokify/googleutil v0.1.10/go.mod h1:vZseRc2L3FQRb0K2J7vkFAoE9DIu81MRwBxAexwYmEI=
 github.com/grokify/gostor v0.2.1/go.mod h1:4a6v+pcFFt4uxHThTcCcarL48EkMPe5Fc/0NvCQAifY=
