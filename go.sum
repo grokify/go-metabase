@@ -239,14 +239,13 @@ github.com/grokify/goauth v0.13.5 h1:NE5FcYah8VPOnelkDzX9Ft5NhFnsK13LaOZIyiz8YPk
 github.com/grokify/goauth v0.13.5/go.mod h1:NAfwApSUFhSc+v91DUcoDdUpmddfdL2hZInsLp4h9To=
 github.com/grokify/gocharts/v2 v2.4.1/go.mod h1:rfKIZT84ndxlIBmVB06nkGE+NwsXK8lO8GCEje8Zrjs=
 github.com/grokify/gocharts/v2 v2.6.2/go.mod h1:xBU3FCaWZSlkxPG7G/+qRQv6DwB4/Wo0PeWhOTUiBiw=
-github.com/grokify/gocharts/v2 v2.7.2 h1:FrKDr0RIHpRFcqklsFbkfwBKA0zN5Knlcxl4vbUbGQQ=
-github.com/grokify/gocharts/v2 v2.7.2/go.mod h1:lZixG0ajJkk2QzZlvZOkDvnEQJC2nUGJ4zz3Sm9hvio=
+github.com/grokify/gocharts/v2 v2.7.3 h1:V7rb3vYw8SWIxn7c+LPMUlbFUlf2BaR/Mj7zGo4V4cc=
+github.com/grokify/gocharts/v2 v2.7.3/go.mod h1:Z3e+MJxjK04szwBkrilsu73UU7rd0RzGrxpE15PnhUY=
 github.com/grokify/gohttp v0.2.1/go.mod h1:lvWGlBA0PeelznQ5fFlr9GRbNOCsY86q5dmY9FqSlxE=
 github.com/grokify/googleutil v0.1.10/go.mod h1:vZseRc2L3FQRb0K2J7vkFAoE9DIu81MRwBxAexwYmEI=
 github.com/grokify/gostor v0.2.1/go.mod h1:4a6v+pcFFt4uxHThTcCcarL48EkMPe5Fc/0NvCQAifY=
 github.com/grokify/mogo v0.37.18/go.mod h1:emNx8mwkHHcn3bB/8z8542H/WY6IxrHWBeWnyYHRV9g=
 github.com/grokify/mogo v0.38.7/go.mod h1:0ZjE06N5LaDjnaZKD1zpGriUrmwpaj0L4/F9pznebCk=
-github.com/grokify/mogo v0.39.1/go.mod h1:PePLmFD41Nw+qjF8xrtIi3CCHMzEpacW2DL+VJOOldk=
 github.com/grokify/mogo v0.39.4 h1:gXVQ4+wJR986Qer7N/MGK5fzFVRQNsU8LGm++0dUhtI=
 github.com/grokify/mogo v0.39.4/go.mod h1:0YiyOOSD1CRchDlcfVcYntUL0E9i9y/huZSWxgDuJqY=
 github.com/grokify/spectrum v1.12.2/go.mod h1:w5RZ7cPC0mKY+nbtakl9lWFrbQVmuO2WZNnomfb3LC0=
@@ -390,7 +389,6 @@ golang.org/x/crypto v0.0.0-20220214200702-86341886e292/go.mod h1:IxCIyHEi3zRg3s0
 golang.org/x/crypto v0.0.0-20220331220935-ae2d96664a29/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220408190544-5352b0902921/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
-golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898 h1:SLP7Q4Di66FONjDJbCYrCRrh97focO6sLogHO7/g8F0=
 golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/exp v0.0.0-20180321215751-8460e604b9de/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
@@ -498,7 +496,6 @@ golang.org/x/net v0.0.0-20220325170049-de3da57026de/go.mod h1:CfG3xpIq0wQ8r1q4Su
 golang.org/x/net v0.0.0-20220403103023-749bd193bc2b/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
 golang.org/x/net v0.0.0-20220407224826-aac1ed45d8e3/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
 golang.org/x/net v0.0.0-20220412020605-290c469a71a5/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
-golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
 golang.org/x/net v0.0.0-20220517181318-183a9ca12b87 h1:cCR+9mKLOGyX4Zx+uBZDXEDAQsvKQ/XbW4vreG5v1jU=
 golang.org/x/net v0.0.0-20220517181318-183a9ca12b87/go.mod h1:CfG3xpIq0wQ8r1q4Su4UZFWDARRcnwPjda9FqA0JpMk=
 golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be/go.mod h1:N/0e6XlmueqKjAGxoOufVs8QHGRruUQn6yWY3a++T0U=
