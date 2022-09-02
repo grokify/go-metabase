@@ -5,17 +5,17 @@ go 1.18
 require (
 	github.com/antihax/optional v1.0.0
 	github.com/grokify/go-simplekpi v0.1.14
-	github.com/grokify/goauth v0.16.0
+	github.com/grokify/goauth v0.16.2
 	github.com/grokify/gocharts/v2 v2.8.0
 	github.com/grokify/mogo v0.40.4
 	github.com/jessevdk/go-flags v1.5.0
-	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7
+	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094
 
 )
 
 require (
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/caarlos0/env/v6 v6.9.3 // indirect
+	github.com/caarlos0/env/v6 v6.10.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
-	github.com/rs/zerolog v1.27.0 // indirect
+	github.com/rs/zerolog v1.28.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fastjson v1.6.3 // indirect
 	github.com/valyala/quicktemplate v1.7.0 // indirect
