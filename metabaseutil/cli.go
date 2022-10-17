@@ -49,10 +49,10 @@ func (opts *AppConfig) validateCLI() error {
 		}
 		if len(missingFields) > 0 && len(missingFields) < 3 {
 			msg := strings.Join(missingFields, ",")
-			return fmt.Errorf("Missing Fields: [%s]", msg)
+			return fmt.Errorf("missing Fields: [%s]", msg)
 		}
 	} else if opts.Config != "env" {
-		return fmt.Errorf("ConfigLocation is not in (cli|env) [%s]", opts.Config)
+		return fmt.Errorf("configLocation is not in (cli|env) [%s]", opts.Config)
 	}
 	return nil
 }
