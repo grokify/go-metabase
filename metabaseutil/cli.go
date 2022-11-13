@@ -8,7 +8,6 @@ import (
 	"github.com/grokify/go-metabase/metabase"
 	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/mogo/config"
-	"github.com/grokify/mogo/fmt/fmtutil"
 )
 
 type AppConfig struct {
@@ -84,7 +83,12 @@ func (opts *AppConfig) GetClient() (*metabase.APIClient, *mo.AuthResponse, error
 	if err != nil {
 		return nil, nil, err
 	}
-	fmtutil.PrintJSON(opts)
+	/*
+		err = fmtutil.PrintJSON(opts)
+		if err != nil {
+			return nil, nil, err
+		}
+	*/
 	return NewApiClientPasswordWithSessionId(
 		opts.URL, opts.Username, opts.Password, opts.SessionId, true)
 }

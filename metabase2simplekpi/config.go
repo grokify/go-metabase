@@ -102,6 +102,7 @@ func ExecDataset(m2sCfg Config, ds DatasetInfo, funcSqlResp func(ds DatasetInfo,
 		fmtutil.PrintJSON(ds)
 		fmt.Printf("NATIVE_SQL: %s\n", ds.MetabaseQuery.NativeSQL())
 		log.Fatal(errorsutil.Wrap(err, fmt.Sprintf("E_QUERY_MB [%v]", ds.KpiName)))
+		return err
 	}
 
 	if ds.SimplekpiUpdateExec {
