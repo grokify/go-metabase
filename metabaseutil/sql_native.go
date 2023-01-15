@@ -10,7 +10,7 @@ import (
 
 	"github.com/grokify/go-metabase/metabase"
 	"github.com/grokify/gocharts/v2/data/timeseries"
-	"github.com/grokify/mogo/net/httputilmore"
+	"github.com/grokify/mogo/net/http/httputilmore"
 	"github.com/grokify/mogo/net/urlutil"
 )
 
