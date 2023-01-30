@@ -5,9 +5,9 @@ go 1.18
 require (
 	github.com/antihax/optional v1.0.0
 	github.com/grokify/go-simplekpi v0.1.17
-	github.com/grokify/goauth v0.17.4
-	github.com/grokify/gocharts/v2 v2.8.8
-	github.com/grokify/mogo v0.45.0
+	github.com/grokify/goauth v0.17.5
+	github.com/grokify/gocharts/v2 v2.8.9
+	github.com/grokify/mogo v0.46.0
 	github.com/jessevdk/go-flags v1.5.0
 	golang.org/x/oauth2 v0.4.0
 )
@@ -29,7 +29,7 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
-	github.com/rs/zerolog v1.28.0 // indirect
+	github.com/rs/zerolog v1.29.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	github.com/valyala/quicktemplate v1.7.0 // indirect
@@ -37,7 +37,7 @@ require (
 	github.com/xuri/excelize/v2 v2.7.0 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/exp v0.0.0-20230113213754-f9f960f08ad4 // indirect
+	golang.org/x/exp v0.0.0-20230127193734-31bee513bff7 // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
