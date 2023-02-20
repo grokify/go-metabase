@@ -23,7 +23,7 @@ type optionsDbList struct {
 }
 
 func main() {
-	loaded, err := config.LoadDotEnvSkipEmptyInfo(os.Getenv("ENV_PATH"))
+	loaded, err := config.LoadDotEnv([]string{os.Getenv("ENV_PATH")}, 1)
 	if err != nil {
 		log.Fatal(errorsutil.Wrap(err, "E_LOAD_ENV"))
 	}

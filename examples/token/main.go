@@ -44,10 +44,10 @@ func initialize() (mbOptions, error) {
 		return opts, err
 	}
 
-	read, err := config.LoadDotEnvSkipEmptyInfo(
+	read, err := config.LoadDotEnv([]string{
 		opts.EnvPath,
 		os.Getenv("ENV_PATH"),
-		".env")
+		".env"}, -1)
 	if err != nil {
 		return opts, err
 	}
