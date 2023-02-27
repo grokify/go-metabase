@@ -7,7 +7,7 @@ require (
 	github.com/grokify/go-simplekpi v0.1.18
 	github.com/grokify/goauth v0.17.6
 	github.com/grokify/gocharts/v2 v2.8.10
-	github.com/grokify/mogo v0.47.0
+	github.com/grokify/mogo v0.48.0
 	github.com/jessevdk/go-flags v1.5.0
 	golang.org/x/oauth2 v0.5.0
 )
@@ -37,11 +37,12 @@ require (
 	github.com/xuri/excelize/v2 v2.7.0 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
 	golang.org/x/crypto v0.6.0 // indirect
-	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	gonum.org/v1/gonum v0.12.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
+	gopkg.in/oleiade/reflections.v1 v1.0.0 // indirect
 )
