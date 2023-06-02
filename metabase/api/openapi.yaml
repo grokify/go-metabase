@@ -7,10 +7,14 @@ servers:
 paths:
   /api/database:
     get:
-      description: Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
+      description: "Fetch all Databases. include_tables means we should hydrate the\
+        \ Tables belonging to each DB. include_cards here means we should also include\
+        \ virtual Table entries for saved Questions, e.g. so we can easily use them\
+        \ as source Tables in queries. Default for both is false."
       operationId: listDatabases
       parameters:
-      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+      - description: "value may be nil, or if non-nil, value must be a valid boolean\
+          \ string ('true' or 'false')."
         explode: true
         in: query
         name: include_tables
@@ -19,7 +23,8 @@ paths:
           default: false
           type: boolean
         style: form
-      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+      - description: "value may be nil, or if non-nil, value must be a valid boolean\
+          \ string ('true' or 'false')."
         explode: true
         in: query
         name: include_cards
@@ -29,7 +34,7 @@ paths:
           type: boolean
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -51,7 +56,7 @@ paths:
               $ref: '#/components/schemas/DatasetQueryJsonQuery'
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -390,10 +395,10 @@ components:
           - columns
           - columns
           rows:
-          - - '{}'
-            - '{}'
-          - - '{}'
-            - '{}'
+          - - ""
+            - ""
+          - - ""
+            - ""
           cols:
           - special_type: special_type
             description: description
@@ -412,13 +417,13 @@ components:
               display_name: display_name
               table_id: 1
               visibility_type: visibility_type
-            extra_info: '{}'
+            extra_info: "{}"
             base_type: base_type
             name: name
             fingerprint:
               global:
                 distinct-count: 1
-              type: '{}'
+              type: "{}"
             id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
@@ -439,13 +444,13 @@ components:
               display_name: display_name
               table_id: 1
               visibility_type: visibility_type
-            extra_info: '{}'
+            extra_info: "{}"
             base_type: base_type
             name: name
             fingerprint:
               global:
                 distinct-count: 1
-              type: '{}'
+              type: "{}"
             id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
@@ -496,13 +501,13 @@ components:
           display_name: display_name
           table_id: 1
           visibility_type: visibility_type
-        extra_info: '{}'
+        extra_info: "{}"
         base_type: base_type
         name: name
         fingerprint:
           global:
             distinct-count: 1
-          type: '{}'
+          type: "{}"
         id: 4
         remapped_from: remapped_from
         visibility_type: visibility_type
@@ -524,7 +529,7 @@ components:
           description: unknown type
           type: string
         extra_info:
-          description: can be '{"target_table_id":517}'
+          description: "can be '{\"target_table_id\":517}'"
           type: object
         fk_field_id:
           description: unknown type
@@ -580,12 +585,13 @@ components:
       example:
         global:
           distinct-count: 1
-        type: '{}'
+        type: "{}"
       properties:
         global:
           $ref: '#/components/schemas/DatasetQueryResultsColFingerprintGlobal'
         type:
-          description: map[string]DatasetQueryResultsColFingerprintType results in map[string]interface{}
+          description: "map[string]DatasetQueryResultsColFingerprintType results in\
+            \ map[string]interface{}"
           type: object
       type: object
     DatasetQueryResultsColFingerprintGlobal:
@@ -643,10 +649,10 @@ components:
         - columns
         - columns
         rows:
-        - - '{}'
-          - '{}'
-        - - '{}'
-          - '{}'
+        - - ""
+          - ""
+        - - ""
+          - ""
         cols:
         - special_type: special_type
           description: description
@@ -665,13 +671,13 @@ components:
             display_name: display_name
             table_id: 1
             visibility_type: visibility_type
-          extra_info: '{}'
+          extra_info: "{}"
           base_type: base_type
           name: name
           fingerprint:
             global:
               distinct-count: 1
-            type: '{}'
+            type: "{}"
           id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
@@ -692,13 +698,13 @@ components:
             display_name: display_name
             table_id: 1
             visibility_type: visibility_type
-          extra_info: '{}'
+          extra_info: "{}"
           base_type: base_type
           name: name
           fingerprint:
             global:
               distinct-count: 1
-            type: '{}'
+            type: "{}"
           id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
@@ -709,8 +715,7 @@ components:
           type: array
         rows:
           items:
-            items:
-              type: object
+            items: {}
             type: array
           type: array
         native_form:

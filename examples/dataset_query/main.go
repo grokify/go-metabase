@@ -28,20 +28,25 @@ func main() {
 
 	databaseId := int64(3)
 	sourceTableId := int64(656)
-
+	requestType := "query"
+	queryPage := int64(1)
+	queryItems := int64(2000)
+	maxResult := int64(10000)
 	opts := metabase.DatasetQueryJsonQuery{
-		Database: databaseId,
-		Type:     "query",
-		Query: metabase.DatasetQueryDsl{
-			SourceTable: sourceTableId,
-			Page:        metabase.DatasetQueryDslPage{Page: int64(1), Items: int64(2000)},
+		Database: &databaseId,
+		Type:     &requestType,
+		Query: &metabase.DatasetQueryDsl{
+			SourceTable: &sourceTableId,
+			Page:        &metabase.DatasetQueryDslPage{Page: &queryPage, Items: &queryItems},
 		},
-		Constraints: metabase.DatasetQueryConstraints{MaxResults: 10000},
+		Constraints: &metabase.DatasetQueryConstraints{MaxResults: &maxResult},
 	}
 
+	request := apiClient.DatasetApi.QueryDatabase(context.Background())
+	request.DatasetQueryJsonQuery(opts)
+
 	if 1 == 1 {
-		info, resp, err := apiClient.DatasetApi.QueryDatabase(
-			context.Background(), opts)
+		info, resp, err := apiClient.DatasetApi.QueryDatabaseExecute(request)
 		if err != nil {
 			log.Fatal(err)
 		} else if resp.StatusCode >= 300 {

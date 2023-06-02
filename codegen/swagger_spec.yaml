@@ -373,7 +373,11 @@ components:
           items:
             type: array
             items:
-              type: object
+              oneOf:
+                - string
+                - number
+                - integer
+                - boolean
             #$ref: '#/components/schemas/ArrayString'
         native_form:
           $ref: '#/components/schemas/DatasetQueryResultsNativeForm'
