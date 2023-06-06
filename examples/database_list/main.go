@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/antihax/optional"
 	"github.com/jessevdk/go-flags"
 
 	"github.com/grokify/go-metabase/metabase"
@@ -65,11 +64,11 @@ func main() {
 }
 
 func printDatabaseList(apiClient *metabase.APIClient, verbose bool) error {
-	opts := metabase.ListDatabasesOpts{
-		IncludeTables: optional.NewBool(true)}
 
-	info, resp, err := apiClient.DatabaseApi.ListDatabases(
-		context.Background(), &opts)
+	request := apiClient.DatabaseApi.ListDatabases(context.Background())
+	request.IncludeTables(true)
+
+	info, resp, err := apiClient.DatabaseApi.ListDatabasesExecute(request)
 	if err != nil {
 		return err
 	} else if resp.StatusCode >= 300 {

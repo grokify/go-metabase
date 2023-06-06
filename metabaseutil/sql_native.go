@@ -19,15 +19,18 @@ const (
 	QueryTypeNative = "native"
 )
 
-func QuerySQL(apiClient *metabase.APIClient, databaseID int64, sql string) (metabase.DatasetQueryResults, *http.Response, error) {
-	return apiClient.DatasetApi.QueryDatabase(
-		context.Background(),
-		metabase.DatasetQueryJsonQuery{
-			Database: databaseID,
-			Type:     QueryTypeNative,
-			Native:   metabase.DatasetQueryNative{Query: sql},
-			// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
-		})
+func QuerySQL(apiClient *metabase.APIClient, databaseID int64, sql string) (*metabase.DatasetQueryResults, *http.Response, error) {
+	request := apiClient.DatasetApi.QueryDatabase(context.Background())
+	qtn := QueryTypeNative
+
+	request.DatasetQueryJsonQuery(metabase.DatasetQueryJsonQuery{
+		Database: &databaseID,
+		Type:     &qtn,
+		Native:   &metabase.DatasetQueryNative{Query: &sql},
+		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
+	})
+
+	return apiClient.DatasetApi.QueryDatabaseExecute(request)
 }
 
 func QuerySQLHttpMore(httpClient *http.Client, baseURL string, databaseID int64, sql string) (*SqlResponse, *http.Response, error) {
@@ -41,11 +44,12 @@ func QuerySQLHttpMore(httpClient *http.Client, baseURL string, databaseID int64,
 
 func QuerySQLHttp(httpClient *http.Client, baseURL string, databaseID int64, sql string) (*http.Response, error) {
 	apiUrl := urlutil.JoinAbsolute(baseURL, ApiUrlDataset)
+	qtn := "native"
 
 	qry := metabase.DatasetQueryJsonQuery{
-		Database: databaseID,
-		Type:     "native",
-		Native:   metabase.DatasetQueryNative{Query: sql},
+		Database: &databaseID,
+		Type:     &qtn,
+		Native:   &metabase.DatasetQueryNative{Query: &sql},
 		// Constraints: metabase.DatasetQueryConstraints{MaxResults: limit},
 	}
 

@@ -35,7 +35,7 @@ func NewApiClientPasswordWithSessionId(serverURL, username, password, sessionId 
 	}
 
 	apiConfig := metabase.NewConfiguration()
-	apiConfig.BasePath = serverURL
+	apiConfig.Servers[0].URL = serverURL
 	apiConfig.HTTPClient = httpClient
 	return metabase.NewAPIClient(apiConfig), authResponse, nil
 }
@@ -52,16 +52,27 @@ func NewApiClientEnv(cfg *mo.ConfigEnvOpts) (*metabase.APIClient, *mo.AuthRespon
 
 func NewApiClientHttpClient(mbBaseUrl string, httpClient *http.Client) *metabase.APIClient {
 	apiConfig := metabase.NewConfiguration()
-	apiConfig.BasePath = mbBaseUrl
+	apiConfig.Servers[0].URL = mbBaseUrl
 	apiConfig.HTTPClient = httpClient
 	return metabase.NewAPIClient(apiConfig)
 }
 
 func NewApiClientSessionId(serverUrl, token string, tlsSkipVerify bool) *metabase.APIClient {
-	return metabase.NewAPIClient(
-		&metabase.Configuration{
-			BasePath:   serverUrl,
-			HTTPClient: mo.NewClientSessionID(token, tlsSkipVerify)})
+	cfg := &metabase.Configuration{
+		DefaultHeader: make(map[string]string),
+		UserAgent:     "OpenAPI-Generator/1.0.0/go",
+		Debug:         false,
+		Servers: metabase.ServerConfigurations{
+			{
+				URL:         serverUrl,
+				Description: "No description provided",
+			},
+		},
+		OperationServers: map[string]metabase.ServerConfigurations{},
+		HTTPClient:       mo.NewClientSessionID(token, tlsSkipVerify),
+	}
+
+	return metabase.NewAPIClient(cfg)
 }
 
 type Records struct {
@@ -207,12 +218,16 @@ func (rec *Record) GetTime(key, format string) (time.Time, error) {
 }
 
 func SimpleQuery(databaseId, tableId int64) metabase.DatasetQueryJsonQuery {
+	typeQuery := "query"
+	page := int64(1)
+	maxPerPage := int64(MaxPerPage)
+
 	return metabase.DatasetQueryJsonQuery{
-		Database: databaseId,
-		Type:     "query",
-		Query: metabase.DatasetQueryDsl{
-			SourceTable: tableId,
-			Page:        metabase.DatasetQueryDslPage{Page: int64(1), Items: MaxPerPage}}}
+		Database: &databaseId,
+		Type:     &typeQuery,
+		Query: &metabase.DatasetQueryDsl{
+			SourceTable: &tableId,
+			Page:        &metabase.DatasetQueryDslPage{Page: &page, Items: &maxPerPage}}}
 }
 
 func GetAllRecordsSimple(apiClient *metabase.APIClient, databaseId, tableId int64) (Records, error) {
@@ -220,13 +235,17 @@ func GetAllRecordsSimple(apiClient *metabase.APIClient, databaseId, tableId int6
 }
 
 func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJsonQuery) (Records, error) {
-	opts.Query.Page = metabase.DatasetQueryDslPage{Page: int64(1), Items: MaxPerPage}
+	page := int64(1)
+	maxPerPage := int64(MaxPerPage)
+	opts.Query.Page = &metabase.DatasetQueryDslPage{Page: &page, Items: &maxPerPage}
 	records := Records{}
 	pageCount := MaxPerPage
 
 	for pageCount >= MaxPerPage {
-		info, resp, err := apiClient.DatasetApi.QueryDatabase(
-			context.Background(), opts)
+		query := apiClient.DatasetApi.QueryDatabase(context.Background())
+		query.DatasetQueryJsonQuery(opts)
+
+		info, resp, err := apiClient.DatasetApi.QueryDatabaseExecute(query)
 		if err != nil {
 			return records, err
 		} else if resp.StatusCode >= 300 {
@@ -239,7 +258,7 @@ func GetAllRecords(apiClient *metabase.APIClient, opts metabase.DatasetQueryJson
 			records.Cols = info.Data.Columns
 		}
 		records.Rows = append(records.Rows, info.Data.Rows...)
-		opts.Query.Page.Page += int64(1)
+		*opts.Query.Page.Page += int64(1)
 		pageCount = int64(len(info.Data.Rows))
 	}
 	return records, nil
