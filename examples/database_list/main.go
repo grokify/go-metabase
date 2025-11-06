@@ -6,14 +6,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/antihax/optional"
 	"github.com/jessevdk/go-flags"
 
-	"github.com/grokify/go-metabase/metabase"
-	"github.com/grokify/go-metabase/metabaseutil"
+	"github.com/1024pix/go-metabase/metabase"
+	"github.com/1024pix/go-metabase/metabaseutil"
 	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/mogo/config"
-	"github.com/grokify/mogo/errors/errorsutil"
 	"github.com/grokify/mogo/fmt/fmtutil"
 	"github.com/grokify/mogo/strconv/strconvutil"
 )
@@ -23,11 +21,12 @@ type optionsDbList struct {
 }
 
 func main() {
-	loaded, err := config.LoadDotEnv([]string{os.Getenv("ENV_PATH")}, 1)
+	read, err := config.LoadDotEnv([]string{
+		os.Getenv("ENV_PATH"), ".env"}, -1)
 	if err != nil {
-		log.Fatal(errorsutil.Wrap(err, "E_LOAD_ENV"))
+		log.Fatal(err)
 	}
-	fmtutil.PrintJSON(loaded)
+	fmtutil.PrintJSON(read)
 
 	opts := optionsDbList{}
 	_, err = flags.Parse(&opts)
@@ -65,24 +64,24 @@ func main() {
 }
 
 func printDatabaseList(apiClient *metabase.APIClient, verbose bool) error {
-	opts := metabase.ListDatabasesOpts{
-		IncludeTables: optional.NewBool(true)}
 
-	info, resp, err := apiClient.DatabaseApi.ListDatabases(
-		context.Background(), &opts)
+	request := apiClient.DatabaseApi.ListDatabases(context.Background())
+	request = request.Include("tables")
+
+	info, resp, err := apiClient.DatabaseApi.ListDatabasesExecute(request)
 	if err != nil {
 		return err
 	} else if resp.StatusCode >= 300 {
 		return fmt.Errorf("Status Code [%v]", resp.StatusCode)
 	}
 
-	for _, db := range info {
-		fmt.Printf("DB_ID [%v] DB_NAME [%v]\n", db.Id, db.Name)
+	for _, db := range info.Data {
+		fmt.Printf("DB_ID [%v] DB_NAME [%v]\n", db.Id, *db.Name)
 		fmtutil.PrintJSON(db)
 		if verbose {
 			for _, tb := range db.Tables {
 				fmt.Printf("DB_ID [%v] DB_NAME [%v] TB_ID [%v] TB_NAME [%v] [%v]\n",
-					db.Id, db.Name, tb.Id, tb.Name, tb)
+					db.Id, *db.Name, tb.Id, *tb.Name, tb)
 				fmtutil.PrintJSON(tb)
 			}
 		}

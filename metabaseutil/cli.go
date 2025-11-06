@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/grokify/go-metabase/metabase"
+	"github.com/1024pix/go-metabase/metabase"
 	mo "github.com/grokify/goauth/metabase"
 	"github.com/grokify/mogo/config"
 )

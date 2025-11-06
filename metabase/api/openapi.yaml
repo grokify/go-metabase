@@ -7,37 +7,168 @@ servers:
 paths:
   /api/database:
     get:
-      description: Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
+      description: "Fetch all Databases. include_tables means we should hydrate the\
+        \ Tables belonging to each DB. include_cards here means we should also include\
+        \ virtual Table entries for saved Questions, e.g. so we can easily use them\
+        \ as source Tables in queries. Default for both is false."
       operationId: listDatabases
       parameters:
-      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+      - description: "value may be nil, or if non-nil, value must be a valid boolean\
+          \ string ('true' or 'false')."
         explode: true
         in: query
-        name: include_tables
+        name: include
+        required: false
+        schema:
+          default: tables
+          type: string
+        style: form
+      - description: "value may be nil, or if non-nil, value must be a valid boolean\
+          \ string ('true' or 'false')."
+        explode: true
+        in: query
+        name: saved
         required: false
         schema:
           default: false
           type: boolean
         style: form
-      - description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+      - description: "will only include DBs for which the current user has data model\
+          \ editing permissions. (If include=tables, this also applies to the list\
+          \ of tables in each DB). Should only be used if Enterprise Edition code\
+          \ is available the advanced-permissions feature is enabled."
         explode: true
         in: query
-        name: include_cards
+        name: include_editable_data_model
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: will only include DBs for which the current user can edit the
+          DB details. Has no effect unless Enterprise Edition code is available and
+          the advanced-permissions feature is enabled.
+        explode: true
+        in: query
+        name: exclude_uneditable_details
         required: false
         schema:
           default: false
           type: boolean
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/Database'
-                type: array
+                $ref: '#/components/schemas/DatabaseList'
           description: successful operation
       summary: List Databases
+      tags:
+      - database
+  /api/database/{databaseId}:
+    get:
+      description: "Fetch one Databases. include_tables means we should hydrate the\
+        \ Tables belonging to each DB. include_cards here means we should also include\
+        \ virtual Table entries for saved Questions, e.g. so we can easily use them\
+        \ as source Tables in queries. Default for both is false."
+      operationId: getDatabase
+      parameters:
+      - description: The database ID
+        explode: false
+        in: path
+        name: databaseId
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+        style: simple
+      - description: "value may be nil, or if non-nil, value must be a valid boolean\
+          \ string ('true' or 'false')."
+        explode: true
+        in: query
+        name: include
+        required: false
+        schema:
+          default: tables
+          type: string
+        style: form
+      - description: "will only include DBs for which the current user has data model\
+          \ editing permissions. (If include=tables, this also applies to the list\
+          \ of tables in each DB). Should only be used if Enterprise Edition code\
+          \ is available the advanced-permissions feature is enabled."
+        explode: true
+        in: query
+        name: include_editable_data_model
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: will only include DBs for which the current user can edit the
+          DB details. Has no effect unless Enterprise Edition code is available and
+          the advanced-permissions feature is enabled.
+        explode: true
+        in: query
+        name: exclude_uneditable_details
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: successful operation
+      summary: Get a Database
+      tags:
+      - database
+  /api/database/{databaseId}/metadata:
+    get:
+      description: "Get metadata about a Database, including all of its Tables and\
+        \ Fields. Returns DB, fields, and field values. By default only non-hidden\
+        \ tables and fields are returned."
+      operationId: databaseMetadata
+      parameters:
+      - description: The database ID
+        explode: false
+        in: path
+        name: databaseId
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+        style: simple
+      - description: show hidden tables and fields.
+        explode: true
+        in: query
+        name: include_hidden
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: return tables for which the current user has data model editing
+          permissions.
+        explode: true
+        in: query
+        name: include_editable_data_model
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: successful operation
+      summary: Get metadata about a Database.
       tags:
       - database
   /api/dataset:
@@ -51,7 +182,7 @@ paths:
               $ref: '#/components/schemas/DatasetQueryJsonQuery'
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -60,37 +191,158 @@ paths:
       summary: Execute a query
       tags:
       - dataset
+  /api/permissions/graph:
+    get:
+      description: Fetch a graph of execution permissions.
+      operationId: getPermissionsGraph
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsGraph'
+          description: successful operation
+      summary: Fetch a graph of execution permissions.
+      tags:
+      - permissions
+  /api/permissions/group:
+    get:
+      description: "Fetch all PermissionsGroups, including a count of the number of\
+        \ :members in that group. This API requires superuser or group manager of\
+        \ more than one group. Group manager is only available if advanced-permissions\
+        \ is enabled and returns only groups that user is manager of."
+      operationId: getPermissionsGroup
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PermissionGroup'
+                type: array
+          description: successful operation
+      summary: Fetch all permissions group.
+      tags:
+      - permissions
 components:
   schemas:
-    DatabaseDetails:
+    DatabaseList:
       example:
-        connProperties: connProperties
-        let-user-control-scheduling: true
-        password: password
-        dbname: dbname
-        port: 6
-        host: host
-        user: user
-        authMech: 1
+        total: 5
+        data:
+        - description: description
+          created_at: 2000-01-23T04:56:07.000+00:00
+          caveats: caveats
+          is_sample: true
+          features:
+          - features
+          - features
+          metadata_sync_schedule: metadata_sync_schedule
+          tables:
+          - schema: schema
+            entity_name: entity_name
+            description: description
+            active: true
+            created_at: 2000-01-23T04:56:07.000+00:00
+            rows: 6
+            display_name: display_name
+            raw_table_id: raw_table_id
+            caveats: caveats
+            entity_type: entity_type
+            show_in_getting_started: true
+            db_id: 5
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: name
+            points_of_interest: points_of_interest
+            id: 1
+            visibility_type: visibility_type
+          - schema: schema
+            entity_name: entity_name
+            description: description
+            active: true
+            created_at: 2000-01-23T04:56:07.000+00:00
+            rows: 6
+            display_name: display_name
+            raw_table_id: raw_table_id
+            caveats: caveats
+            entity_type: entity_type
+            show_in_getting_started: true
+            db_id: 5
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: name
+            points_of_interest: points_of_interest
+            id: 1
+            visibility_type: visibility_type
+          is_full_sync: true
+          native_permissions: native_permissions
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          engine: engine
+          name: name
+          points_of_interest: points_of_interest
+          details: "{}"
+          id: 0
+          cache_field_values_schedule: cache_field_values_schedule
+        - description: description
+          created_at: 2000-01-23T04:56:07.000+00:00
+          caveats: caveats
+          is_sample: true
+          features:
+          - features
+          - features
+          metadata_sync_schedule: metadata_sync_schedule
+          tables:
+          - schema: schema
+            entity_name: entity_name
+            description: description
+            active: true
+            created_at: 2000-01-23T04:56:07.000+00:00
+            rows: 6
+            display_name: display_name
+            raw_table_id: raw_table_id
+            caveats: caveats
+            entity_type: entity_type
+            show_in_getting_started: true
+            db_id: 5
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: name
+            points_of_interest: points_of_interest
+            id: 1
+            visibility_type: visibility_type
+          - schema: schema
+            entity_name: entity_name
+            description: description
+            active: true
+            created_at: 2000-01-23T04:56:07.000+00:00
+            rows: 6
+            display_name: display_name
+            raw_table_id: raw_table_id
+            caveats: caveats
+            entity_type: entity_type
+            show_in_getting_started: true
+            db_id: 5
+            updated_at: 2000-01-23T04:56:07.000+00:00
+            name: name
+            points_of_interest: points_of_interest
+            id: 1
+            visibility_type: visibility_type
+          is_full_sync: true
+          native_permissions: native_permissions
+          updated_at: 2000-01-23T04:56:07.000+00:00
+          engine: engine
+          name: name
+          points_of_interest: points_of_interest
+          details: "{}"
+          id: 0
+          cache_field_values_schedule: cache_field_values_schedule
       properties:
-        host:
-          type: string
-        port:
-          format: int32
+        data:
+          items:
+            $ref: '#/components/schemas/Database'
+          type: array
+        total:
           type: integer
-        dbname:
-          type: string
-        authMech:
-          format: int32
-          type: integer
-        user:
-          type: string
-        password:
-          type: string
-        connProperties:
-          type: string
-        let-user-control-scheduling:
-          type: boolean
+      type: object
+    DatabaseDetails:
       type: object
     DatabaseTable:
       example:
@@ -99,17 +351,17 @@ components:
         description: description
         active: true
         created_at: 2000-01-23T04:56:07.000+00:00
-        rows: 5
+        rows: 6
         display_name: display_name
         raw_table_id: raw_table_id
         caveats: caveats
         entity_type: entity_type
         show_in_getting_started: true
-        db_id: 2
+        db_id: 5
         updated_at: 2000-01-23T04:56:07.000+00:00
         name: name
         points_of_interest: points_of_interest
-        id: 5
+        id: 1
         visibility_type: visibility_type
       properties:
         description:
@@ -174,34 +426,34 @@ components:
           description: description
           active: true
           created_at: 2000-01-23T04:56:07.000+00:00
-          rows: 5
+          rows: 6
           display_name: display_name
           raw_table_id: raw_table_id
           caveats: caveats
           entity_type: entity_type
           show_in_getting_started: true
-          db_id: 2
+          db_id: 5
           updated_at: 2000-01-23T04:56:07.000+00:00
           name: name
           points_of_interest: points_of_interest
-          id: 5
+          id: 1
           visibility_type: visibility_type
         - schema: schema
           entity_name: entity_name
           description: description
           active: true
           created_at: 2000-01-23T04:56:07.000+00:00
-          rows: 5
+          rows: 6
           display_name: display_name
           raw_table_id: raw_table_id
           caveats: caveats
           entity_type: entity_type
           show_in_getting_started: true
-          db_id: 2
+          db_id: 5
           updated_at: 2000-01-23T04:56:07.000+00:00
           name: name
           points_of_interest: points_of_interest
-          id: 5
+          id: 1
           visibility_type: visibility_type
         is_full_sync: true
         native_permissions: native_permissions
@@ -209,15 +461,7 @@ components:
         engine: engine
         name: name
         points_of_interest: points_of_interest
-        details:
-          connProperties: connProperties
-          let-user-control-scheduling: true
-          password: password
-          dbname: dbname
-          port: 6
-          host: host
-          user: user
-          authMech: 1
+        details: "{}"
         id: 0
         cache_field_values_schedule: cache_field_values_schedule
       properties:
@@ -259,7 +503,7 @@ components:
           description: type unknown
           type: string
         details:
-          $ref: '#/components/schemas/DatabaseDetails'
+          type: object
         tables:
           items:
             $ref: '#/components/schemas/DatabaseTable'
@@ -390,10 +634,10 @@ components:
           - columns
           - columns
           rows:
-          - - '{}'
-            - '{}'
-          - - '{}'
-            - '{}'
+          - - ""
+            - ""
+          - - ""
+            - ""
           cols:
           - special_type: special_type
             description: description
@@ -412,13 +656,13 @@ components:
               display_name: display_name
               table_id: 1
               visibility_type: visibility_type
-            extra_info: '{}'
+            extra_info: "{}"
             base_type: base_type
             name: name
             fingerprint:
               global:
                 distinct-count: 1
-              type: '{}'
+              type: "{}"
             id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
@@ -439,13 +683,13 @@ components:
               display_name: display_name
               table_id: 1
               visibility_type: visibility_type
-            extra_info: '{}'
+            extra_info: "{}"
             base_type: base_type
             name: name
             fingerprint:
               global:
                 distinct-count: 1
-              type: '{}'
+              type: "{}"
             id: 4
             remapped_from: remapped_from
             visibility_type: visibility_type
@@ -496,13 +740,13 @@ components:
           display_name: display_name
           table_id: 1
           visibility_type: visibility_type
-        extra_info: '{}'
+        extra_info: "{}"
         base_type: base_type
         name: name
         fingerprint:
           global:
             distinct-count: 1
-          type: '{}'
+          type: "{}"
         id: 4
         remapped_from: remapped_from
         visibility_type: visibility_type
@@ -524,7 +768,7 @@ components:
           description: unknown type
           type: string
         extra_info:
-          description: can be '{"target_table_id":517}'
+          description: "can be '{\"target_table_id\":517}'"
           type: object
         fk_field_id:
           description: unknown type
@@ -580,12 +824,13 @@ components:
       example:
         global:
           distinct-count: 1
-        type: '{}'
+        type: "{}"
       properties:
         global:
           $ref: '#/components/schemas/DatasetQueryResultsColFingerprintGlobal'
         type:
-          description: map[string]DatasetQueryResultsColFingerprintType results in map[string]interface{}
+          description: "map[string]DatasetQueryResultsColFingerprintType results in\
+            \ map[string]interface{}"
           type: object
       type: object
     DatasetQueryResultsColFingerprintGlobal:
@@ -643,10 +888,10 @@ components:
         - columns
         - columns
         rows:
-        - - '{}'
-          - '{}'
-        - - '{}'
-          - '{}'
+        - - ""
+          - ""
+        - - ""
+          - ""
         cols:
         - special_type: special_type
           description: description
@@ -665,13 +910,13 @@ components:
             display_name: display_name
             table_id: 1
             visibility_type: visibility_type
-          extra_info: '{}'
+          extra_info: "{}"
           base_type: base_type
           name: name
           fingerprint:
             global:
               distinct-count: 1
-            type: '{}'
+            type: "{}"
           id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
@@ -692,13 +937,13 @@ components:
             display_name: display_name
             table_id: 1
             visibility_type: visibility_type
-          extra_info: '{}'
+          extra_info: "{}"
           base_type: base_type
           name: name
           fingerprint:
             global:
               distinct-count: 1
-            type: '{}'
+            type: "{}"
           id: 4
           remapped_from: remapped_from
           visibility_type: visibility_type
@@ -709,8 +954,7 @@ components:
           type: array
         rows:
           items:
-            items:
-              type: object
+            items: {}
             type: array
           type: array
         native_form:
@@ -759,5 +1003,46 @@ components:
         name:
           type: string
         special_type:
+          type: string
+      type: object
+    PermissionGroup:
+      example:
+        name: name
+        id: 0
+        member_count: 6
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        member_count:
+          type: integer
+      type: object
+    PermissionsGraph:
+      example:
+        groups:
+          key:
+            key:
+              create-queries: create-queries
+              view-data: view-data
+        revision: 0
+      properties:
+        revision:
+          type: integer
+        groups:
+          additionalProperties:
+            additionalProperties:
+              $ref: '#/components/schemas/PermissionGraphData'
+            type: object
+          type: object
+      type: object
+    PermissionGraphData:
+      example:
+        create-queries: create-queries
+        view-data: view-data
+      properties:
+        view-data:
+          type: string
+        create-queries:
           type: string
       type: object

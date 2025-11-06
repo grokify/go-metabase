@@ -45,11 +45,11 @@ Auto-generated documentation is available here:
 - [ ] Database
   - [ ] DELETE /api/database/:id
   - [x] GET /api/database/
-  - [ ] GET /api/database/:id
+  - [x] GET /api/database/:id
   - [ ] GET /api/database/:id/autocomplete_suggestions
   - [ ] GET /api/database/:id/fields
   - [ ] GET /api/database/:id/idfields
-  - [ ] GET /api/database/:id/metadata
+  - [x] GET /api/database/:id/metadata
   - [ ] POST /api/database/
   - [ ] POST /api/database/:id/sync
   - [ ] POST /api/database/sample_dataset
@@ -60,6 +60,10 @@ Auto-generated documentation is available here:
   - [ ] POST /api/dataset/csv
   - [ ] POST /api/dataset/duration
   - [ ] POST /api/dataset/json
+
+- Permission
+  - [x] GET /api/permissions/graph
+  - [x] GET /api/permissions/group
 
 ## References
 

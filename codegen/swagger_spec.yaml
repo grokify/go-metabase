@@ -13,16 +13,30 @@ paths:
         - database
       description: Fetch all Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
       parameters:
-        - name: include_tables
+        - name: include
+          in: query
+          description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+          required: false
+          schema:
+            type: string
+            default: tables
+        - name: saved
           in: query
           description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
           required: false
           schema:
             type: boolean
             default: false
-        - name: include_cards
+        - name: include_editable_data_model
           in: query
-          description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+          description: will only include DBs for which the current user has data model editing permissions. (If include=tables, this also applies to the list of tables in each DB). Should only be used if Enterprise Edition code is available the advanced-permissions feature is enabled.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: exclude_uneditable_details
+          in: query
+          description: will only include DBs for which the current user can edit the DB details. Has no effect unless Enterprise Edition code is available and the advanced-permissions feature is enabled.
           required: false
           schema:
             type: boolean
@@ -33,9 +47,86 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Database'
+                $ref: '#/components/schemas/DatabaseList'
+  /api/database/{databaseId}:
+    get:
+      summary: Get a Database
+      operationId: getDatabase
+      tags:
+        - database
+      description: Fetch one Databases. include_tables means we should hydrate the Tables belonging to each DB. include_cards here means we should also include virtual Table entries for saved Questions, e.g. so we can easily use them as source Tables in queries. Default for both is false.
+      parameters:
+        - in: path
+          name: databaseId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The database ID
+        - name: include
+          in: query
+          description: value may be nil, or if non-nil, value must be a valid boolean string ('true' or 'false').
+          required: false
+          schema:
+            type: string
+            default: tables
+        - name: include_editable_data_model
+          in: query
+          description: will only include DBs for which the current user has data model editing permissions. (If include=tables, this also applies to the list of tables in each DB). Should only be used if Enterprise Edition code is available the advanced-permissions feature is enabled.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: exclude_uneditable_details
+          in: query
+          description: will only include DBs for which the current user can edit the DB details. Has no effect unless Enterprise Edition code is available and the advanced-permissions feature is enabled.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+  /api/database/{databaseId}/metadata:
+    get:
+      summary: Get metadata about a Database.
+      operationId: databaseMetadata
+      tags:
+        - database
+      description: Get metadata about a Database, including all of its Tables and Fields. Returns DB, fields, and field values. By default only non-hidden tables and fields are returned.
+      parameters:
+        - in: path
+          name: databaseId
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The database ID
+        - name: include_hidden
+          in: query
+          description: show hidden tables and fields.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: include_editable_data_model
+          in: query
+          description: return tables for which the current user has data model editing permissions.
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
   /api/dataset:
     post:
       summary: Execute a query
@@ -56,29 +147,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DatasetQueryResults'
+  /api/permissions/graph:
+    get:
+      summary: Fetch a graph of execution permissions.
+      operationId: getPermissionsGraph
+      tags:
+        - permissions
+      description: Fetch a graph of execution permissions.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsGraph'
+  /api/permissions/group:
+    get:
+      summary: Fetch all permissions group.
+      operationId: getPermissionsGroup
+      tags:
+        - permissions
+      description: Fetch all PermissionsGroups, including a count of the number of :members in that group. This API requires superuser or group manager of more than one group. Group manager is only available if advanced-permissions is enabled and returns only groups that user is manager of.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermissionGroup'
 components:
   schemas:
-    DatabaseDetails:
+    DatabaseList:
       type: object
       properties:
-        host:
-          type: string
-        port:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Database'
+        total:
           type: integer
-          format: int32
-        dbname:
-          type: string
-        authMech:
-          type: integer
-          format: int32
-        user:
-          type: string
-        password:
-          type: string
-        connProperties:
-          type: string
-        let-user-control-scheduling:
-          type: boolean
+    DatabaseDetails:
+      type: object
     DatabaseTable:
       type: object
       properties:
@@ -130,7 +241,7 @@ components:
     Database:
       type: object
       required:
-        - id  
+        - id
       properties:
         id:
           type: integer
@@ -293,11 +404,11 @@ components:
         visibility_type:
           type: string
         target:
-          $ref: 'DatasetQueryResultsColTarget'
+          $ref: '#/components/schemas/DatasetQueryResultsColTarget'
         display_name:
           type: string
         fingerprint:
-          $ref: 'DatasetQueryResultsColFingerprint'
+          $ref: '#/components/schemas/DatasetQueryResultsColFingerprint'
         base_type:
           type: string
     DatasetQueryResultsColTarget:
@@ -325,7 +436,7 @@ components:
       type: object
       properties:
         global:
-          $ref: 'DatasetQueryResultsColFingerprintGlobal'
+          $ref: '#/components/schemas/DatasetQueryResultsColFingerprintGlobal'
         type:
           description: map[string]DatasetQueryResultsColFingerprintType results in map[string]interface{}
           type: object
@@ -373,7 +484,11 @@ components:
           items:
             type: array
             items:
-              type: object
+              oneOf:
+                - string
+                - number
+                - integer
+                - boolean
             #$ref: '#/components/schemas/ArrayString'
         native_form:
           $ref: '#/components/schemas/DatasetQueryResultsNativeForm'
@@ -406,3 +521,31 @@ components:
           type: string
         special_type:
           type: string
+    PermissionGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        member_count:
+          type: integer
+    PermissionsGraph:
+      type: object
+      properties:
+        revision:
+          type: integer
+        groups:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/PermissionGraphData'
+    PermissionGraphData:
+      type: object
+      properties:
+        view-data:
+          type: string
+        create-queries:
+          type: string
+
